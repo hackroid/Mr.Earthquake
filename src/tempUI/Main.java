@@ -66,7 +66,7 @@ public class Main extends Application {
         tv.setItems(earthquakes);
     }
     
-    public static void main(String[] args) {
+    public static void start(String[] args) {
                launch(args);
     }
     
