@@ -3,11 +3,13 @@ import java.io.*;
 import java.net.*;
 
 public class grabEarthquake {
-	
+//	The website limits its data to 2000 pages, 
+//	50 earthquakes on every page, total 100k pieces.
+//	Just for mainpage, in time descending order, and real-time update
 	public static void generateURL() {
 		int i;
 		String urlRoot = "https://www.emsc-csem.org/Earthquake/?view=", url;
-		for(i = 2000; i <= 2000; i++) {
+		for(i = 1; i <= 2000; i++) {
 			url = urlRoot + String.valueOf(i);
 //			System.out.printf("%s\n", url);
 			get_Info(url);
