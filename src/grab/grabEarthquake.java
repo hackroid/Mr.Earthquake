@@ -51,20 +51,26 @@ public class grabEarthquake {
 		indexST = min2Result.indexOf("</thead><tbody");
 		String min3Result = min2Result.substring(indexST + 26);
 		
-		circleFilter(min3Result, 0, 0);
 //		System.out.println(min3Result);
-//		System.out.println("\n\n\n\n\n\n\n");
+		circleFilter(min3Result, 0, 0);
 	}
 	public static void circleFilter(String dataSet, int prev, int count) {
 		
 //		Find every piece of data row
-		int curr = dataSet.indexOf("</tr>", prev);
+		int curr = dataSet.indexOf("<tr", prev);
+		while (curr != -1) {
+			if (dataSet.substring(curr + 8, curr + 9).equals("t")) {
+				curr = dataSet.indexOf("<tr", curr + 10);
+			} else 
+				break;
+		}
+			
+		prev = dataSet.indexOf("</tr>", curr);
 		if (curr != -1) {
 //			System.out.printf("%d ", prev);
-			curr = curr + 6;
-			dataFilter(dataSet.substring(prev, curr - 1));
+			dataFilter(dataSet.substring(curr, prev + 5));
 			count++;
-			circleFilter(dataSet, curr, count);
+			circleFilter(dataSet, prev, count);
 		} else {
 //			Check data count
 //			System.out.printf("\nall ---> %d ", count);
@@ -73,7 +79,7 @@ public class grabEarthquake {
 	public static void dataFilter(String dataPiece) {
 		
 //		Filter out the data
-//		System.out.printf("%s\n", dataPiece);
+		System.out.printf("%s\n", dataPiece);
 		int index, id, depth;
 		String date, time, latitude, longitude;
 		double mag;
