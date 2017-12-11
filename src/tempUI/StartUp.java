@@ -8,10 +8,10 @@ import com.*;
 
 public class StartUp {
 	
-	public static void main(String[] args) {
+// 	public static void main(String[] args) {
 //		Main.start(args);
 //		Data collection complete, please do not restart it
 		
-	}
+// 	}
 
 }
