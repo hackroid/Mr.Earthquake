@@ -2,13 +2,16 @@
 
 package tempUI;
 
-import grab.grabEarthquake;
+import grab.*;
+import java.sql.*;
+import com.*;
 
 public class StartUp {
-
+	
 	public static void main(String[] args) {
 //		Main.start(args);
-		grabEarthquake.generateURL();
+//		Data collection complete, please do not restart it
+		
 	}
 
 }

@@ -1,15 +1,24 @@
+//*********Data collection complete, please do not restart it***********
+
 package grab;
 import java.io.*;
 import java.net.*;
+import java.sql.*;
+
+import com.mysqlJDBC;
 
 public class grabEarthquake {
 //	The website limits its data to 2000 pages, 
 //	50 earthquakes on every page, total 100k pieces.
 //	Just for mainpage, in time descending order, and real-time update
+	
+	static Connection conn = mysqlJDBC.getConnection();
+	static Statement  stmt = mysqlJDBC.getStatement(conn);
+	
 	public static void generateURL() {
 		int i;
 		String urlRoot = "https://www.emsc-csem.org/Earthquake/?view=", url;
-		for(i = 1; i <= 2000; i++) {
+		for(i = 68; i <= 2000; i++) {
 			url = urlRoot + String.valueOf(i);
 //			System.out.printf("%s\n", url);
 			get_Info(url);
@@ -42,17 +51,21 @@ public class grabEarthquake {
 				e.printStackTrace();
 			}
 		}
-		
-//		Step by step precision
-		String min1Result = Result.substring(18000, 65000);
-		indexST = min1Result.indexOf("my_pagelist_0");
-		indexED = min1Result.indexOf("</tbody>");
-		String min2Result = min1Result.substring(indexST - 23, indexED);
-		indexST = min2Result.indexOf("</thead><tbody");
-		String min3Result = min2Result.substring(indexST + 26);
-		
-//		System.out.println(min3Result);
-		circleFilter(min3Result, 0, 0);
+		try {
+//			Step by step precision
+			String min1Result = Result.substring(18000, 65000);
+			indexST = min1Result.indexOf("my_pagelist_0");
+			indexED = min1Result.indexOf("</tbody>");
+			String min2Result = min1Result.substring(indexST - 23, indexED);
+			indexST = min2Result.indexOf("</thead><tbody");
+			String min3Result = min2Result.substring(indexST + 26);
+			
+//			System.out.println(min3Result);
+			circleFilter(min3Result, 0, 0);
+		} catch (Exception e) {
+			
+		}
+
 	}
 	public static void circleFilter(String dataSet, int prev, int count) {
 		
@@ -79,10 +92,10 @@ public class grabEarthquake {
 	public static void dataFilter(String dataPiece) {
 		
 //		Filter out the data
-		System.out.printf("%s\n", dataPiece);
+//		System.out.printf("%s\n", dataPiece);
 		int index, id, depth;
-		String date, time, latitude, longitude;
-		double mag;
+		String date, time, latitudetemp, longitudetemp, region;
+		float mag, latitude, longitude;
 		
 		index = dataPiece.indexOf("id=") + 4;
 		id = Integer.valueOf(dataPiece.substring(index, index + 6)).intValue();
@@ -93,17 +106,21 @@ public class grabEarthquake {
 		
 		index = dataPiece.indexOf(".", index + 30);
 		if (dataPiece.charAt(index - 2) == '>')
-			latitude = dataPiece.substring(index - 1, index + 3) + dataPiece.charAt(index + 33);
+			latitude = Float.parseFloat(dataPiece.substring(index - 1, index + 3));
 		else
-			latitude = dataPiece.substring(index - 2, index + 3) + dataPiece.charAt(index + 33);
+			latitude = Float.parseFloat(dataPiece.substring(index - 2, index + 3));
+		if (dataPiece.charAt(index + 33) == 'S')
+			latitude = 0 - latitude;
 		
 		index = dataPiece.indexOf(".", index + 30);
 		if (dataPiece.charAt(index - 2) == '>')
-			longitude = dataPiece.substring(index - 1, index + 3) + dataPiece.charAt(index + 33);
+			longitude = Float.parseFloat(dataPiece.substring(index - 1, index + 3)) + dataPiece.charAt(index + 33);
 		else if (dataPiece.charAt(index - 3) == '>')
-			longitude = dataPiece.substring(index - 2, index + 3) + dataPiece.charAt(index + 33);
+			longitude = Float.parseFloat(dataPiece.substring(index - 2, index + 3)) + dataPiece.charAt(index + 33);
 		else
-			longitude = dataPiece.substring(index - 3, index + 3) + dataPiece.charAt(index + 33);
+			longitude = Float.parseFloat(dataPiece.substring(index - 3, index + 3)) + dataPiece.charAt(index + 33);
+		if (dataPiece.charAt(index + 33) == 'W')
+			longitude = 0 - longitude;
 		
 		index = dataPiece.indexOf("tabev3", index + 30);
 		if (dataPiece.charAt(index + 9) == '<')
@@ -114,8 +131,12 @@ public class grabEarthquake {
 			depth = Integer.valueOf(dataPiece.substring(index + 8, index + 11)).intValue();
 		
 		index = dataPiece.indexOf(".", index + 30);
-		mag = Double.parseDouble(dataPiece.substring(index - 1, index + 2));
+		mag = Float.parseFloat(dataPiece.substring(index - 1, index + 2));
 		
-		System.out.printf("%d %s %s %s %s %d %.1f\n", id, date, time, latitude, longitude, depth, mag);
+		index = dataPiece.indexOf("&#160;", index + 4);
+		region = dataPiece.substring(index + 6, dataPiece.indexOf("<", index));
+		
+		System.out.printf("%d %s %s %.2f %.2f %d %.1f %s\n", id, date, time, latitude, longitude, depth, mag, region);
+		pushData.push(id, date, time, latitude, longitude, depth, mag, region, stmt);
 	}
 }
