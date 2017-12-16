@@ -12,8 +12,8 @@ public class Earthquake {
     public Earthquake(){
         this.id = null;
         this.UTC_date = null;
-        this.latiude = 0.00;
-        this.longitude = 0.00;
+        this.latiude = -91.00;
+        this.longitude = -181.00;
         this.depth = 0.00;
         this.magnitude = 0.00;
         this.region = null;
