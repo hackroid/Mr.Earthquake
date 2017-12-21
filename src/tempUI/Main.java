@@ -11,8 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -22,9 +22,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Main extends Application {
-    //    private final String cssFile = Main.class.getClassLoader()
-    //                                    .getResource("gui.css")
-    //                                    .toString();
+        private final String cssFile = Main.class.getClassLoader()
+                                        .getResource("tempUI/application.css")
+                                        .toString();
     
     private final String dataFile = Main.class
     .getClassLoader()
@@ -77,29 +77,36 @@ public class Main extends Application {
     }
     
     public void setGridPane(){
-        final Label lb_from = new Label("From: ");
-        final Label lb_to= new Label("To: ");
+        final Label lb_from = new Label(" From: ");
+        final Label lb_to= new Label(" To: ");
         final Button search_btn = new Button("Search");
-        final Label lb_mag = new Label("Magnitude:      ");
-        final Label lb_mag_to = new Label("----------------");
-        final Label lb_region = new Label("Region: ");
+        final Label lb_mag = new Label(" Magnitude: ");
+        final Label lb_mag_to = new Label("  ~   ");
+        final Label lb_region = new Label(" Region: ");
+        search_btn.setId("search-button");
         fromDate = new DatePicker();
         //        fromDate.setValue(minDate);
         toDate = new DatePicker();
         //        toDate.setValue(maxDate);
-        
+        HBox hBox1= new HBox();
+        HBox hBox2= new HBox();
+        HBox hBox3= new HBox();
         ComboBox<String> cbox1 = new ComboBox<String>();
         ComboBox<Float> cbox2 = new ComboBox<Float>();
         ComboBox<String> cbox3 = new ComboBox<String>();
-        
+
+        hBox1.getChildren().addAll(lb_from,fromDate,lb_to,toDate);
+        hBox2.getChildren().addAll(lb_mag,cbox1,lb_mag_to,cbox2);
+        hBox3.getChildren().addAll(lb_region,cbox3);
+
         //for cbox1
         ObservableList<String> mag_range
-        = FXCollections.observableArrayList("0.0","1.0","2.0","3.0"
-                                            ,"4.0","5.0","6.0","7.0","8.0");
+                = FXCollections.observableArrayList("0.0","1.0","2.0","3.0"
+                ,"4.0","5.0","6.0","7.0","8.0");
         cbox1.setItems(mag_range);
         cbox1.setVisibleRowCount(5);
         cbox1.setValue("0.0");
-        
+
         //for cbox2
         cbox2.setVisibleRowCount(5);
         cbox2.setValue(new Float(9.0f));
@@ -108,7 +115,7 @@ public class Main extends Application {
             mag_range_max.addAll(new Float(i));
         }
         cbox2.setItems(mag_range_max);
-        
+
         //changelistener for cbox1, making sure values in cbox2 larger than cbox1
         cbox1.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
             for (float i=1.0f;i<=10.0;i=i+1.0f){
@@ -118,7 +125,14 @@ public class Main extends Application {
                 cbox2.getItems().add(i);
             }
         });
-        
+
+        fromDate.setId("cbx-date");
+        toDate.setId("cbx-date");
+        cbox1.setId("cbx-mag");
+        cbox2.setId("cbx-mag");
+        cbox3.setId("cbx-reg");
+
+
         /** ------------for cbox3-------------
          * need a method to extract all regions from the data
          * then set string items to cbox3
@@ -126,26 +140,22 @@ public class Main extends Application {
          cbox3.setItems(Ov regions)
          -------------------------------------**/
         cbox3.setValue("-------WORLD WILD-------");
-        
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(5, 5, 5, 5));
-        
-        grid.getColumnConstraints().addAll(new ColumnConstraints(100),new ColumnConstraints(150)
-                                           , new ColumnConstraints(150),new ColumnConstraints(100),new ColumnConstraints(150));
-        
-        grid.add(lb_from,0,0);
-        grid.add(fromDate,1,0);
-        grid.add(lb_to,3,0);
-        grid.add(toDate,4,0);
-        grid.add(search_btn,10,10);
-        grid.add(lb_mag,0,2);
-        grid.add(cbox1,1,2);
-        grid.add(lb_mag_to,2,2);
-        grid.add(cbox2,3,2);
-        grid.add(lb_region,0,4);
-        grid.add(cbox3,1,4,2,1);
-        
+
+        grid.add(hBox1,1,0,5,1);
+        grid.add(search_btn,5,3);
+        grid.add(hBox2,1,1,4,1);
+        grid.add(hBox3,1,2,4,1);
+
+        grid.getStyleClass().add("grid");
+        hBox1.getStyleClass().add("hbox");
+        hBox2.getStyleClass().add("hbox");
+        hBox3.getStyleClass().add("hbox");
+        lb_from.getStyleClass().add("label-grid");
+        lb_to.getStyleClass().add("label-grid");
+        lb_mag.getStyleClass().add("label-grid");
+        lb_region.getStyleClass().add("label-grid");
+
+//        grid.setGridLinesVisible(true);
         /**Method: searQuakes
          search_btn.setOnAction(event ->
          searchQuakes(fromDate.getValue().toString(),toDate.getValue().toString(),cbox1.getValue.toString()
@@ -159,19 +169,26 @@ public class Main extends Application {
         stage.setTitle("Display EarthQuakes");
         Group root = new Group();
         Scene scene = new Scene(root);
-        //        scene.getStylesheets().add(cssFile);
+        scene.getStylesheets().add(cssFile);
         VBox vBox = new VBox();
         vBox.setSpacing(6);
         vBox.setPadding(new Insets(12));
         vBox.setAlignment(Pos.CENTER);
         setGridPane();
-        
+
+        HBox hbox=new HBox();
+        HBox himg=new HBox();
+        himg.setMinWidth(300);
+        himg.setMinHeight(200);
+        himg.getStyleClass().add("hbox-img");
+        hbox.getChildren().addAll(grid,himg);
+
+        vBox.getChildren().add(hbox);
         root.getChildren().add(vBox);
-        vBox.getChildren().add(grid);
-        
-        tv.setPrefWidth(800);
+        vBox.getStyleClass().add("vbox");
+        tv.setPrefWidth(860);
         tv.setPrefHeight(500);
-        
+
         TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("id");
         c1.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getId()));
         TableColumn<Earthquake,String> c2 = new TableColumn<Earthquake, String>("UTC_date");
@@ -188,7 +205,7 @@ public class Main extends Application {
         c7.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getRegion()));
         tv.getColumns().addAll(c1,c2,c3,c4,c5,c6,c7);
         setItems(tv);
-        
+
         //create a tabpane
         TabPane tabpane = new TabPane();
         vBox.getChildren().add(tabpane);
@@ -213,9 +230,8 @@ public class Main extends Application {
         //set default tab: tab1 - table view
         SingleSelectionModel<Tab> selectionModel = tabpane.getSelectionModel();
         selectionModel.select(tab1);
-        
+
         tabpane.getTabs().addAll(tab1,tab2,tab3,tab4);
-        
         stage.setScene(scene);
         stage.show();
     }
