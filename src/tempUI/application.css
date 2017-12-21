@@ -1,1 +1,174 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.vbox{
+    -fx-background-color: #050606;
+}
+.hbox{
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+    -fx-background-radius: 15;
+}
+.hbox-img{
+    -fx-background-image: url("../candle.jpg");
+    /*-fx-background-position: center;*/
+    /*-fx-background-size: 270,220;*/
+    -fx-background-repeat: no-repeat;
+    -fx-opacity: 70%;
+}
+.grid {
+    -fx-hgap: 20;
+    -fx-vgap: 15;
+    -fx-padding: 10;
+    -fx-background-insets: 0.0 5.0 0.0 5.0;
+    -fx-border-width: 10;
+    -fx-max-width: 600;
+    -fx-max-height: 600;
+}
+
+.label{
+    -fx-font: 14px "Verdana";
+    -fx-font-weight: bold;
+    -fx-background-radius: 2.0;
+    -fx-font-weight: 300;
+    -fx-text-fill: #a9c9f4;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+.table-view {
+    -fx-base: #93abc3;
+    -fx-control-inner-background: rgb(244, 237, 228);
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: #f9efdf;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+}
+.table-view .label{
+    -fx-text-alignment: center;
+    -fx-text-fill: #ffffff;
+    -fx-font: 13px "April";
+
+}
+.table-view .label:hover{
+    -fx-background-color: linear-gradient(#fff2c5, #b0b0b0);
+}
+
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+.tab-pane
+{
+    -fx-tab-min-width:120px;
+    -fx-outer-border: #f9efdf;
+}
+.tab-pane .tab:hover
+{
+    -fx-background-color: linear-gradient(#9ab5de, #b0b0b0);
+}
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+.tab-pane .tab
+{
+    -fx-background-color: #e0e0e0;
+
+}
+.tab-pane .tab:selected
+{
+    -fx-background-color: #3c3c3c;
+}
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-font: 12px "Verdana";
+    -fx-text-fill: rgba(255, 70, 65, 0.70);
+    -fx-font-weight: bold;
+}
+.tab:selected .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #8ba4c9;
+}
+
+#search-button {
+    -fx-text-fill: white;
+    -fx-min-width: 70;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#cbe2f4, #475461);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+#search-button:hover {
+    -fx-background-color: linear-gradient(#69757e, #cbe2f4);
+    -fx-text-fill: white;
+}
+
+.combo-box .list-cell {
+    -fx-background: white;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em;
+    -fx-text-alignment: center;
+}
+
+.combo-box-popup .list-view .list-cell
+{
+    -fx-padding: 4 0 4 5;
+    -fx-background-color: #fffcef;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: #b3d9f4;
+    -fx-text-alignment: center;
+
+}
+.combo-box-base
+{
+    -fx-background-color: #3b4574, #3b4574, white, #f8ecf9;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 2;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+.combo-box-base:focused {
+    -fx-background-color: #cbe2f4;
+    -fx-background-radius: 6.4, 4, 5, 3;
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+
+#cbx-date{
+    -fx-max-width: 150;
+}
+#cbx-mag {
+    -fx-min-width: 110;
+    -fx-text-alignment: center;
+}
+#cbx-reg{
+    -fx-min-width: 150;
+    -fx-text-alignment: center;
+}
+
+.date-picker-popup > .month-year-pane {
+    -fx-background-color: -fx-main-back;
+    -fx-background-insets: 0 0 0 0, 0 0 1 0;
+    -fx-background-color: #ddddf4;
+}
+.date-picker-popup .button{
+    -fx-background-color: #fefff6;
+    -fx-progress-color: #ddddf4;
+}
+.date-picker-popup .button:hover{
+    -fx-background-color: linear-gradient(#69757e, #cbe2f4);
+}
+.date-picker-popup .label{
+    -fx-text-fill: mediumblue;
+    -fx-font-size: 12px;
+}
+.date-cell {
+    -fx-background-color: #f4ede4;
+    -fx-text-fill: #3b4574;
+}
+.date-cell:hover{
+    -fx-background-color: linear-gradient(#ecc59c, #ededed);
+}
