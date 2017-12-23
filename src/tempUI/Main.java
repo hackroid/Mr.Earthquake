@@ -1,5 +1,6 @@
 package tempUI;
 	
+import Map.MapView;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -9,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -34,6 +36,7 @@ public class Main extends Application {
     private static ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
     private static TableView<Earthquake> tv = new TableView<Earthquake>();
     private static GridPane grid = new GridPane();
+    private MapView mc;
     
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
@@ -219,6 +222,9 @@ public class Main extends Application {
         tab2 = new Tab();
         tab2.setText("World Map");
         tab2.setClosable(false);
+        mc=new MapView();
+        Group temp=mc.setMap("Mercator.jpg");
+        tab2.setContent(temp);
         //tab3: chart
         tab3 = new Tab();
         tab3.setText("Chart");
