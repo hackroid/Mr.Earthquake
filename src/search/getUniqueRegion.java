@@ -2,7 +2,6 @@ package search;
 
 import com.*;
 import java.sql.*;
-import java.sql.*;
 
 public class getUniqueRegion {
 	public static ResultSet get() {
