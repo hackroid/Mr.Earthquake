@@ -12,7 +12,11 @@ import java.sql.SQLException;
  * have not been tested
  */
 public class TransformUtil {
-    public static ObservableList<Earthquake> SearchRequest(String UTC_date_start, String UTC_date_end, double magS, double magX, String region) {
+    public static ObservableList<Earthquake> SearchRequest(String UTC_date_start,
+                                                           String UTC_date_end,
+                                                           double magS,
+                                                           double magX,
+                                                           String region) {
         ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
         input data = new input(UTC_date_start, UTC_date_end, magS, magX, region);
         ResultSet rs = data.search();

@@ -142,13 +142,10 @@ public class UI extends Application {
 
 //        grid.setGridLinesVisible(true);
 
-//        search_btn.setOnAction(event -> earthquakes=TransformUtil.RsToEq(
-//                TransformUtil.SearchRequest(
-//                fromDate.getValue().toString(),
-//                toDate.getValue().toString(),
-//                Double.parseDouble(cbox1.getValue().toString()),
-//                Double.parseDouble(cbox2.getValue().toString()),
-//                cbox3.getValue().toString())));
+        search_btn.setOnAction(event -> earthquakes=TransformUtil.SearchRequest(fromDate.getValue().toString(),
+                toDate.getValue().toString(),Double.parseDouble(cbox1.getValue().toString()),
+                Double.parseDouble(cbox2.getValue().toString()),cbox3.getValue().toString()));
+
     }
 
     @Override
