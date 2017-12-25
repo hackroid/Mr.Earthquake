@@ -8,8 +8,6 @@
 }
 .hbox-img{
     -fx-background-image: url("../candle.jpg");
-    /*-fx-background-position: center;*/
-    /*-fx-background-size: 270,220;*/
     -fx-background-repeat: no-repeat;
     -fx-opacity: 70%;
 }
@@ -102,39 +100,19 @@
 }
 
 .combo-box .list-cell {
-    -fx-background: white;
-    -fx-text-fill: -fx-text-base-color;
-    -fx-padding: 3 0 2 7;
-    -fx-cell-size: 1.66667em;
+    -fx-background: #fffad7;
     -fx-text-alignment: center;
 }
 
-.combo-box-popup .list-view .list-cell
-{
-    -fx-padding: 4 0 4 5;
-    -fx-background-color: #fffcef;
-    -fx-text-alignment: center;
-    -fx-alignment: center;
-}
-.combo-box-popup .list-view .list-cell:filled:hover
-{
-    -fx-background-color: #b3d9f4;
-    -fx-text-alignment: center;
-
-}
 .combo-box-base
 {
     -fx-background-color: #3b4574, #3b4574, white, #f8ecf9;
     -fx-background-radius: 5, 5, 4, 3;
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
     -fx-padding: 2;
-    -fx-alignment: center;
-    -fx-text-alignment: center;
 }
 .combo-box-base:focused {
     -fx-background-color: #cbe2f4;
-    -fx-background-radius: 6.4, 4, 5, 3;
-    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-background-radius: 6, 4, 5, 3;
 }
 
 #cbx-date{
