@@ -8,30 +8,36 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import search.input;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Locale;
 
-public class Main extends Application {
-        private final String cssFile = Main.class.getClassLoader()
+public class UI extends Application {
+        private final String cssFile = UI.class.getClassLoader()
                                         .getResource("tempUI/application.css")
                                         .toString();
     
+<<<<<<< HEAD:src/tempUI/UI.java
+//    private final String dataFile = UI.class
+//    .getClassLoader()
+//    .getResource("earthquakes.csv")
+//    .toString().replace("file:","");
+=======
 //     private final String dataFile = Main.class
 //     .getClassLoader()
 //     .getResource("earthquakes.csv")
 //     .toString().replace("file:","");
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
     
     private static ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
     private static TableView<Earthquake> tv = new TableView<Earthquake>();
@@ -40,14 +46,51 @@ public class Main extends Application {
     
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
+<<<<<<< HEAD:src/tempUI/UI.java
+//    /**Need to extract the min&max date to set default date
+=======
     private String WorldWide= "-------WORLD WIDE-------";
 
     /**Need to extract the min&max date to set default date
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
      private String     minDate = null;
      private String     maxDate = null;
-     **/
+     private String WorldWide= "-------WORLD WIDE-------";
+//     **/
     
     //read data from .csv file
+<<<<<<< HEAD:src/tempUI/UI.java
+//    static void loadData(String file){
+//        try(BufferedReader reader
+//            = Files.newBufferedReader(Paths.get(file))){
+//            String  line = null;
+//            line = reader.readLine();//ignore header
+//            String[] fields;
+//            while((line = reader.readLine())!=null){
+//                fields = line.split(",");
+//                earthquakes.add(new Earthquake(fields[0],fields[1].replace("\"",""),
+//                                               Double.parseDouble(fields[2]),Double.parseDouble(fields[3]),
+//                                               Double.parseDouble(fields[4]),Double.parseDouble(fields[5]),fields[6]));
+//            }
+//        } catch (IOException e) {
+//            System.err.format("IOException: %s%n", e);
+//        } catch (NumberFormatException e){
+//            System.err.format("NumberFormatException: %s%n", e);
+//        }
+//    }
+    
+    @Override
+    public void init(){
+        Locale.setDefault(Locale.US);
+        fromDate = new DatePicker();
+        toDate = new DatePicker();
+        toDate.setValue(LocalDate.now());
+        fromDate.setValue(toDate.getValue().minusWeeks(1));
+        fromDate.setEditable(false);
+        toDate.setEditable(false);
+//        loadData(minDate,maxDate,0.0,10.0,WorldWild);
+//        loadData(dataFile);
+=======
 //     static void loadData(String file){
 //         try(BufferedReader reader
 //             = Files.newBufferedReader(Paths.get(file))){
@@ -82,15 +125,22 @@ public class Main extends Application {
     @Override
     public void init(){
 //        loadData(minDate,maxDate,0.0,10.0,WorldWild);
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
     }
     
     private void setItems(TableView<Earthquake> tv){
         tv.setItems(earthquakes);
     }
     
+<<<<<<< HEAD:src/tempUI/UI.java
+//    public static void start(String[] args) {
+//               launch(args);
+//    }
+=======
 //     public static void start(String[] args) {
 //                launch(args);
 //     }
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
     
     public void setGridPane(){
         final Label lb_from = new Label(" From: ");
@@ -100,9 +150,9 @@ public class Main extends Application {
         final Label lb_mag_to = new Label("  ~   ");
         final Label lb_region = new Label(" Region: ");
         search_btn.setId("search-button");
-        fromDate = new DatePicker();
+//        fromDate = new DatePicker();
         //        fromDate.setValue(minDate);
-        toDate = new DatePicker();
+//        toDate = new DatePicker();
         //        toDate.setValue(maxDate);
         HBox hBox1= new HBox();
         HBox hBox2= new HBox();
@@ -127,19 +177,20 @@ public class Main extends Application {
         cbox2.setVisibleRowCount(7);
         cbox2.setValue(new Float(9.0f));
         ObservableList<Float> mag_range_max = FXCollections.observableArrayList();
-        for (float i=1.0f; i<=10.0; i=i+1.0f){
+        for (float i=1.0f; i<=9.0; i=i+1.0f){
             mag_range_max.addAll(new Float(i));
         }
         cbox2.setItems(mag_range_max);
 
         //changelistener for cbox1, making sure values in cbox2 larger than cbox1
         cbox1.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
-            for (float i=1.0f;i<=10.0;i=i+1.0f){
+            for (float i=1.0f;i<=9.0;i=i+1.0f){
                 cbox2.getItems().remove(i);
             }
-            for(float i=Float.parseFloat(t1)+1.0f;i<=10.0;i=i+1.0f) {
+            for(float i=Float.parseFloat(t1)+1.0f;i<=9.0;i=i+1.0f) {
                 cbox2.getItems().add(i);
             }
+            cbox2.setValue(new Float(9.0));
         });
 
         fromDate.setId("cbx-date");
@@ -155,7 +206,7 @@ public class Main extends Application {
          cbox3.setVisibleRowCount(5);
          cbox3.setItems(Ov regions)
          -------------------------------------**/
-        cbox3.setValue("-------WORLD WILD-------");
+        cbox3.setValue(WorldWide);
 
         grid.add(hBox1,1,0,5,1);
         grid.add(search_btn,5,3);
@@ -178,7 +229,11 @@ public class Main extends Application {
         VBox vBox = new VBox();
         vBox.setSpacing(6);
         vBox.setPadding(new Insets(12));
+<<<<<<< HEAD:src/tempUI/UI.java
+//        vBox.setAlignment(Pos.CENTER);
+=======
 //         vBox.setAlignment(Pos.CENTER);
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
         setGridPane();
 
         HBox hbox=new HBox();

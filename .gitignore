@@ -1,5 +1,8 @@
 /bin/
+<<<<<<< HEAD
 .DS_Store
 *.xml
 Mr.Earthquake.iml
 src/tempUI/Main.java
+=======
+>>>>>>> 147cf0a00620b00e499368af3f527381f93e693d
