@@ -24,29 +24,24 @@ public class MapView{
     /*
     * list of earthquake
     */
-    public Group setMap(String mapimg){
+    public void setMap(String mapimg){
         Image image= new Image(mapimg);
         imageView = new ImageView();
         imageView.setImage(image);
         group=new Group();
         group.getChildren().add(imageView);
+    }
+    public Node getGroup(){
         return group;
     }
-    public void addEarthquake(Earthquake eq){
-        MapUtil mu=new MapUtil();
-        Node temp = mu.showEQ(eq);
-        group.getChildren().add(temp);
-    }
-    public void addEarthquake(ObservableList<Earthquake> eq){
+    public void setEQ(ObservableList<Earthquake> eq){
+        removeEQ();
         MapUtil mu=new MapUtil();
         for(int i=0;i<eq.size();i++){
             Node temp=mu.showEQ(eq.get(i));
             EQP.getChildren().add(temp);
         }
         group.getChildren().add(EQP);
-    }
-    public void addEarthquack(ObservableList<Earthquake> eql){
-
     }
     public void removeEQ(){
         group.getChildren().remove(EQP);

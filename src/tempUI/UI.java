@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -21,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Map;
 
 public class UI extends Application {
     private final String cssFile = UI.class.getClassLoader()
@@ -32,6 +34,9 @@ public class UI extends Application {
     private static GridPane grid = new GridPane();
     private static ObservableList<String> regions = FXCollections.observableArrayList();
     private MapView mc;
+    private Node MapContent;
+    private TabPane tabpane;
+    private Tab tab1,tab2,tab3,tab4;
     
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
@@ -152,6 +157,8 @@ public class UI extends Application {
                     System.out.println("1");
                     System.out.println(earthquakes.size());
                 setItems(tv);
+                mc.setEQ(earthquakes);
+                tab2.setContent(mc.getGroup());
                 }
         );
 
@@ -207,9 +214,9 @@ public class UI extends Application {
         setItems(tv);
 
         //create a tabpane
-        TabPane tabpane = new TabPane();
+        tabpane = new TabPane();
         vBox.getChildren().add(tabpane);
-        Tab tab1,tab2,tab3,tab4;
+
         //tab1: tableview
         tab1 = new Tab();
         tab1.setText("Table View");
@@ -220,8 +227,9 @@ public class UI extends Application {
         tab2.setText("World Map");
         tab2.setClosable(false);
         mc=new MapView();
-        Group temp=mc.setMap("/tempUI/Mercator.jpg");
-        tab2.setContent(temp);
+        mc.setMap("/tempUI/Mercator.jpg");
+        MapContent=mc.getGroup();
+        tab2.setContent(MapContent);
         //tab3: chart
         tab3 = new Tab();
         tab3.setText("Chart1");
