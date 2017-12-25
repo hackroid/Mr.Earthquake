@@ -27,10 +27,17 @@ public class UI extends Application {
                                         .getResource("tempUI/application.css")
                                         .toString();
     
+<<<<<<< HEAD:src/tempUI/UI.java
 //    private final String dataFile = UI.class
 //    .getClassLoader()
 //    .getResource("earthquakes.csv")
 //    .toString().replace("file:","");
+=======
+//     private final String dataFile = Main.class
+//     .getClassLoader()
+//     .getResource("earthquakes.csv")
+//     .toString().replace("file:","");
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
     
     private static ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
     private static TableView<Earthquake> tv = new TableView<Earthquake>();
@@ -39,13 +46,20 @@ public class UI extends Application {
     
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
+<<<<<<< HEAD:src/tempUI/UI.java
 //    /**Need to extract the min&max date to set default date
+=======
+    private String WorldWide= "-------WORLD WIDE-------";
+
+    /**Need to extract the min&max date to set default date
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
      private String     minDate = null;
      private String     maxDate = null;
      private String WorldWide= "-------WORLD WIDE-------";
 //     **/
     
     //read data from .csv file
+<<<<<<< HEAD:src/tempUI/UI.java
 //    static void loadData(String file){
 //        try(BufferedReader reader
 //            = Files.newBufferedReader(Paths.get(file))){
@@ -76,15 +90,57 @@ public class UI extends Application {
         toDate.setEditable(false);
 //        loadData(minDate,maxDate,0.0,10.0,WorldWild);
 //        loadData(dataFile);
+=======
+//     static void loadData(String file){
+//         try(BufferedReader reader
+//             = Files.newBufferedReader(Paths.get(file))){
+//             String  line = null;
+//             line = reader.readLine();//ignore header
+//             String[] fields;
+//             while((line = reader.readLine())!=null){
+//                 fields = line.split(",");
+//                 earthquakes.add(new Earthquake(fields[0],fields[1].replace("\"",""),
+//                                                Double.parseDouble(fields[2]),Double.parseDouble(fields[3]),
+//                                                Double.parseDouble(fields[4]),Double.parseDouble(fields[5]),fields[6]));
+//             }
+//         } catch (IOException e) {
+//             System.err.format("IOException: %s%n", e);
+//         } catch (NumberFormatException e){
+//             System.err.format("NumberFormatException: %s%n", e);
+//         }
+//     }
+    
+   public static void loadData(String UTC_date_start, String UTC_date_end, double magS, double magX, String region){
+        input data = new input(UTC_date_start, UTC_date_end, magS, magX,region);
+        ResultSet rs= data.search();
+        try {
+            while(rs.next()){
+// convert to earthquakes	    
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+	
+    @Override
+    public void init(){
+//        loadData(minDate,maxDate,0.0,10.0,WorldWild);
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
     }
     
     private void setItems(TableView<Earthquake> tv){
         tv.setItems(earthquakes);
     }
     
+<<<<<<< HEAD:src/tempUI/UI.java
 //    public static void start(String[] args) {
 //               launch(args);
 //    }
+=======
+//     public static void start(String[] args) {
+//                launch(args);
+//     }
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
     
     public void setGridPane(){
         final Label lb_from = new Label(" From: ");
@@ -114,11 +170,11 @@ public class UI extends Application {
                 = FXCollections.observableArrayList("0.0","1.0","2.0","3.0"
                 ,"4.0","5.0","6.0","7.0","8.0");
         cbox1.setItems(mag_range);
-        cbox1.setVisibleRowCount(5);
+        cbox1.setVisibleRowCount(7);
         cbox1.setValue("0.0");
 
         //for cbox2
-        cbox2.setVisibleRowCount(5);
+        cbox2.setVisibleRowCount(7);
         cbox2.setValue(new Float(9.0f));
         ObservableList<Float> mag_range_max = FXCollections.observableArrayList();
         for (float i=1.0f; i<=9.0; i=i+1.0f){
@@ -157,15 +213,6 @@ public class UI extends Application {
         grid.add(hBox2,1,1,4,1);
         grid.add(hBox3,1,2,4,1);
 
-        grid.getStyleClass().add("grid");
-        hBox1.getStyleClass().add("hbox");
-        hBox2.getStyleClass().add("hbox");
-        hBox3.getStyleClass().add("hbox");
-        lb_from.getStyleClass().add("label-grid");
-        lb_to.getStyleClass().add("label-grid");
-        lb_mag.getStyleClass().add("label-grid");
-        lb_region.getStyleClass().add("label-grid");
-
 //        grid.setGridLinesVisible(true);
         /**Method: searQuake
          search_btn.setOnAction(event -> loadData(fromDate.getValue().toString(),toDate.getValue().toString(),Double.parseDouble(cbox1.getValue().toString()),
@@ -182,7 +229,11 @@ public class UI extends Application {
         VBox vBox = new VBox();
         vBox.setSpacing(6);
         vBox.setPadding(new Insets(12));
+<<<<<<< HEAD:src/tempUI/UI.java
 //        vBox.setAlignment(Pos.CENTER);
+=======
+//         vBox.setAlignment(Pos.CENTER);
+>>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
         setGridPane();
 
         HBox hbox=new HBox();
@@ -198,7 +249,7 @@ public class UI extends Application {
         tv.setPrefWidth(860);
         tv.setPrefHeight(500);
 
-        TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("id");
+       TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("id");
         c1.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getId()));
         tv.getColumns().add(c1);
         TableColumn<Earthquake,String> c2 = new TableColumn<Earthquake, String>("UTC_date");
