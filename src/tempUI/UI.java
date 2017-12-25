@@ -23,21 +23,9 @@ import java.time.LocalDate;
 import java.util.Locale;
 
 public class UI extends Application {
-        private final String cssFile = UI.class.getClassLoader()
+    private final String cssFile = UI.class.getClassLoader()
                                         .getResource("tempUI/application.css")
                                         .toString();
-    
-<<<<<<< HEAD:src/tempUI/UI.java
-//    private final String dataFile = UI.class
-//    .getClassLoader()
-//    .getResource("earthquakes.csv")
-//    .toString().replace("file:","");
-=======
-//     private final String dataFile = Main.class
-//     .getClassLoader()
-//     .getResource("earthquakes.csv")
-//     .toString().replace("file:","");
->>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
     
     private static ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
     private static TableView<Earthquake> tv = new TableView<Earthquake>();
@@ -46,39 +34,8 @@ public class UI extends Application {
     
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
-<<<<<<< HEAD:src/tempUI/UI.java
-//    /**Need to extract the min&max date to set default date
-=======
     private String WorldWide= "-------WORLD WIDE-------";
 
-    /**Need to extract the min&max date to set default date
->>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
-     private String     minDate = null;
-     private String     maxDate = null;
-     private String WorldWide= "-------WORLD WIDE-------";
-//     **/
-    
-    //read data from .csv file
-<<<<<<< HEAD:src/tempUI/UI.java
-//    static void loadData(String file){
-//        try(BufferedReader reader
-//            = Files.newBufferedReader(Paths.get(file))){
-//            String  line = null;
-//            line = reader.readLine();//ignore header
-//            String[] fields;
-//            while((line = reader.readLine())!=null){
-//                fields = line.split(",");
-//                earthquakes.add(new Earthquake(fields[0],fields[1].replace("\"",""),
-//                                               Double.parseDouble(fields[2]),Double.parseDouble(fields[3]),
-//                                               Double.parseDouble(fields[4]),Double.parseDouble(fields[5]),fields[6]));
-//            }
-//        } catch (IOException e) {
-//            System.err.format("IOException: %s%n", e);
-//        } catch (NumberFormatException e){
-//            System.err.format("NumberFormatException: %s%n", e);
-//        }
-//    }
-    
     @Override
     public void init(){
         Locale.setDefault(Locale.US);
@@ -90,58 +47,12 @@ public class UI extends Application {
         toDate.setEditable(false);
 //        loadData(minDate,maxDate,0.0,10.0,WorldWild);
 //        loadData(dataFile);
-=======
-//     static void loadData(String file){
-//         try(BufferedReader reader
-//             = Files.newBufferedReader(Paths.get(file))){
-//             String  line = null;
-//             line = reader.readLine();//ignore header
-//             String[] fields;
-//             while((line = reader.readLine())!=null){
-//                 fields = line.split(",");
-//                 earthquakes.add(new Earthquake(fields[0],fields[1].replace("\"",""),
-//                                                Double.parseDouble(fields[2]),Double.parseDouble(fields[3]),
-//                                                Double.parseDouble(fields[4]),Double.parseDouble(fields[5]),fields[6]));
-//             }
-//         } catch (IOException e) {
-//             System.err.format("IOException: %s%n", e);
-//         } catch (NumberFormatException e){
-//             System.err.format("NumberFormatException: %s%n", e);
-//         }
-//     }
-    
-   public static void loadData(String UTC_date_start, String UTC_date_end, double magS, double magX, String region){
-        input data = new input(UTC_date_start, UTC_date_end, magS, magX,region);
-        ResultSet rs= data.search();
-        try {
-            while(rs.next()){
-// convert to earthquakes	    
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-	
-    @Override
-    public void init(){
-//        loadData(minDate,maxDate,0.0,10.0,WorldWild);
->>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
-    }
+     }
     
     private void setItems(TableView<Earthquake> tv){
         tv.setItems(earthquakes);
     }
-    
-<<<<<<< HEAD:src/tempUI/UI.java
-//    public static void start(String[] args) {
-//               launch(args);
-//    }
-=======
-//     public static void start(String[] args) {
-//                launch(args);
-//     }
->>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
-    
+
     public void setGridPane(){
         final Label lb_from = new Label(" From: ");
         final Label lb_to= new Label(" To: ");
@@ -150,10 +61,7 @@ public class UI extends Application {
         final Label lb_mag_to = new Label("  ~   ");
         final Label lb_region = new Label(" Region: ");
         search_btn.setId("search-button");
-//        fromDate = new DatePicker();
-        //        fromDate.setValue(minDate);
-//        toDate = new DatePicker();
-        //        toDate.setValue(maxDate);
+
         HBox hBox1= new HBox();
         HBox hBox2= new HBox();
         HBox hBox3= new HBox();
@@ -228,12 +136,7 @@ public class UI extends Application {
         scene.getStylesheets().add(cssFile);
         VBox vBox = new VBox();
         vBox.setSpacing(6);
-        vBox.setPadding(new Insets(12));
-<<<<<<< HEAD:src/tempUI/UI.java
-//        vBox.setAlignment(Pos.CENTER);
-=======
-//         vBox.setAlignment(Pos.CENTER);
->>>>>>> 4e0bac9cbd8902d790712cd735f210a4ce947f30:src/tempUI/Main.java
+//        vBox.setPadding(new Insets(12));
         setGridPane();
 
         HBox hbox=new HBox();
@@ -245,7 +148,6 @@ public class UI extends Application {
 
         vBox.getChildren().add(hbox);
         root.getChildren().add(vBox);
-        vBox.getStyleClass().add("vbox");
         tv.setPrefWidth(860);
         tv.setPrefHeight(500);
 
