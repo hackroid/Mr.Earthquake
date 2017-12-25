@@ -6,3 +6,8 @@ Mr.Earthquake.iml
 src/tempUI/Main.java
 =======
 >>>>>>> 147cf0a00620b00e499368af3f527381f93e693d
+out/production/Mr.Earthquake/com/mysqlJDBC.class
+*.csv
+*.class
+*.jpg
+*.png

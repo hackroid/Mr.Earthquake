@@ -30,6 +30,7 @@ public class UI extends Application {
     private static ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
     private static TableView<Earthquake> tv = new TableView<Earthquake>();
     private static GridPane grid = new GridPane();
+    private static ObservableList<String> regions = FXCollections.observableArrayList();
     private MapView mc;
     
     private DatePicker fromDate = null;
@@ -45,10 +46,20 @@ public class UI extends Application {
         fromDate.setValue(toDate.getValue().minusWeeks(1));
         fromDate.setEditable(false);
         toDate.setEditable(false);
+
+//        ResultSet region_rs = search.getUniqueRegion.get();
+//        String re="";
+//        try {
+//            while (region_rs.next()){
+//                re=region_rs.getString(0);
+//                regions.add(re);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 //        loadData(minDate,maxDate,0.0,10.0,WorldWild);
-//        loadData(dataFile);
      }
-    
+
     private void setItems(TableView<Earthquake> tv){
         tv.setItems(earthquakes);
     }
@@ -92,13 +103,16 @@ public class UI extends Application {
 
         //changelistener for cbox1, making sure values in cbox2 larger than cbox1
         cbox1.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
+            float tmp=cbox2.getValue();
             for (float i=1.0f;i<=9.0;i=i+1.0f){
                 cbox2.getItems().remove(i);
             }
             for(float i=Float.parseFloat(t1)+1.0f;i<=9.0;i=i+1.0f) {
                 cbox2.getItems().add(i);
             }
-            cbox2.setValue(new Float(9.0));
+            if(tmp>Float.parseFloat(t1)) {
+                cbox2.setValue(tmp);
+            }
         });
 
         fromDate.setId("cbx-date");
@@ -106,6 +120,10 @@ public class UI extends Application {
         cbox1.setId("cbx-mag");
         cbox2.setId("cbx-mag");
         cbox3.setId("cbx-reg");
+        hBox1.getStyleClass().add("hbox");
+        hBox2.getStyleClass().add("hbox");
+        hBox3.getStyleClass().add("hbox");
+        grid.getStyleClass().add("grid");
 
 
         /** ------------for cbox3-------------
@@ -114,6 +132,7 @@ public class UI extends Application {
          cbox3.setVisibleRowCount(5);
          cbox3.setItems(Ov regions)
          -------------------------------------**/
+        cbox3.setItems(regions);
         cbox3.setValue(WorldWide);
 
         grid.add(hBox1,1,0,5,1);
@@ -122,10 +141,14 @@ public class UI extends Application {
         grid.add(hBox3,1,2,4,1);
 
 //        grid.setGridLinesVisible(true);
-        /**Method: searQuake
-         search_btn.setOnAction(event -> loadData(fromDate.getValue().toString(),toDate.getValue().toString(),Double.parseDouble(cbox1.getValue().toString()),
-         Double.parseDouble(cbox2.getValue().toString()),cbox3.getValue().toString()));
-         **/
+
+//        search_btn.setOnAction(event -> earthquakes=TransformUtil.RsToEq(
+//                TransformUtil.SearchRequest(
+//                fromDate.getValue().toString(),
+//                toDate.getValue().toString(),
+//                Double.parseDouble(cbox1.getValue().toString()),
+//                Double.parseDouble(cbox2.getValue().toString()),
+//                cbox3.getValue().toString())));
     }
 
     @Override
@@ -135,10 +158,9 @@ public class UI extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(cssFile);
         VBox vBox = new VBox();
+        setGridPane();//and grid pane
         vBox.setSpacing(6);
 //        vBox.setPadding(new Insets(12));
-        setGridPane();
-
         HBox hbox=new HBox();
         HBox himg=new HBox();
         himg.setMinWidth(300);
@@ -151,7 +173,10 @@ public class UI extends Application {
         tv.setPrefWidth(860);
         tv.setPrefHeight(500);
 
-       TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("id");
+        hbox.getStyleClass().add("hbox");
+        vBox.getStyleClass().add("vbox");
+
+        TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("id");
         c1.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getId()));
         tv.getColumns().add(c1);
         TableColumn<Earthquake,String> c2 = new TableColumn<Earthquake, String>("UTC_date");
@@ -189,7 +214,7 @@ public class UI extends Application {
         tab2.setText("World Map");
         tab2.setClosable(false);
         mc=new MapView();
-        Group temp=mc.setMap("Mercator.jpg");
+        Group temp=mc.setMap("/tempUI/Mercator.jpg");
         tab2.setContent(temp);
         //tab3: chart
         tab3 = new Tab();
