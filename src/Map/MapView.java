@@ -19,6 +19,7 @@ public class MapView{
     */
     private ImageView imageView;
     private Group group;
+    private Group EQP; //earthquake point
 
     /*
     * list of earthquake
@@ -33,14 +34,21 @@ public class MapView{
     }
     public void addEarthquake(Earthquake eq){
         MapUtil mu=new MapUtil();
-        Node temp = mu.drawEarthQuack(eq);
+        Node temp = mu.showEQ(eq);
         group.getChildren().add(temp);
+    }
+    public void addEarthquake(Earthquake[] eq){
+        MapUtil mu=new MapUtil();
+        Node[] temp = mu.showEQA(eq);
+        for(int i=0;i<eq.length;i++){
+            EQP.getChildren().add(temp[i]);
+        }
+        group.getChildren().add(EQP);
     }
     public void addEarthquack(ObservableList<Earthquake> eql){
 
     }
     public void removeEQ(){
-        group.getChildren().clear();
-        group.getChildren().add(imageView);
+        group.getChildren().remove(EQP);
     }
 }
