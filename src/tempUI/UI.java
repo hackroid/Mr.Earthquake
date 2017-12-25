@@ -46,13 +46,14 @@ public class UI extends Application {
     private ComboBox<String> cbox1 = new ComboBox<String>();
     private ComboBox<Float> cbox2 = new ComboBox<Float>();
     private ComboBox<String> cbox3 = new ComboBox<String>();
+
     @Override
     public void init(){
         Locale.setDefault(Locale.US);
         fromDate = new DatePicker();
         toDate = new DatePicker();
         toDate.setValue(LocalDate.now());
-        fromDate.setValue(toDate.getValue().minusWeeks(1));
+        fromDate.setValue(toDate.getValue().minusMonths(3));
         fromDate.setEditable(false);
         toDate.setEditable(false);
 
@@ -131,7 +132,6 @@ public class UI extends Application {
         hBox2.getStyleClass().add("hbox");
         hBox3.getStyleClass().add("hbox");
         grid.getStyleClass().add("grid");
-
 
         /** ------------for cbox3-------------
          * need a method to extract all regions from the data
@@ -213,6 +213,10 @@ public class UI extends Application {
         c7.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getRegion()));
         tv.getColumns().add(c7);
 
+        earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
+                toDate.getValue().toString(), Double.parseDouble(cbox1.getValue().toString()),
+                Double.parseDouble(cbox2.getValue().toString()), cbox3.getValue().toString());
+        res_size.setText(earthquakes.size()+" earthquakes found.");
         setItems(tv);
 
         //create a tabpane
