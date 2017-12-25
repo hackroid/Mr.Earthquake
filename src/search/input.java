@@ -53,9 +53,9 @@ public class input {
 		if (magX != 0) {
 			sql += (" and magnitude < " + Double.toString(magX));
 		}
-		if (region != null) {
-			sql += (" and region = \'" + region + "\'");
-		}
+//		if (region != null) {
+//			sql += (" and region = \'" + region + "\'");
+//		}
 		try {
 			rs = stmt.executeQuery(sql);
 		} catch (SQLException e) {

@@ -37,11 +37,11 @@ public class MapView{
         Node temp = mu.showEQ(eq);
         group.getChildren().add(temp);
     }
-    public void addEarthquake(Earthquake[] eq){
+    public void addEarthquake(ObservableList<Earthquake> eq){
         MapUtil mu=new MapUtil();
-        Node[] temp = mu.showEQA(eq);
-        for(int i=0;i<eq.length;i++){
-            EQP.getChildren().add(temp[i]);
+        for(int i=0;i<eq.size();i++){
+            Node temp=mu.showEQ(eq.get(i));
+            EQP.getChildren().add(temp);
         }
         group.getChildren().add(EQP);
     }
