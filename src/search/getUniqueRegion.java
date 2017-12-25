@@ -1,19 +1,28 @@
 package search;
 
 import com.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 
 public class getUniqueRegion {
-	public static ResultSet get() {
+	public static ObservableList<String> getRegions() {
+		ObservableList<String> regions = FXCollections.observableArrayList();
 		ResultSet rs = null;
+		String re = "";
 		Connection conn = mysqlJDBC.getConnection();
 		Statement stmt = mysqlJDBC.getStatement(conn);
 		String sql = "select count(*) as repetitions, region from quake group by region HAVING repetitions > 0";
 		try {
 			rs = stmt.executeQuery(sql);
-		} catch(SQLException e) {
+			while (rs.next()) {
+				re = rs.getString(2);
+				regions.add(re);
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return regions;
 	}
 }

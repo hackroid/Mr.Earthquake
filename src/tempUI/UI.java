@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.WritableObjectValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -37,7 +38,6 @@ public class UI extends Application {
     private Node MapContent;
     private TabPane tabpane;
     private Tab tab1,tab2,tab3,tab4;
-    
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
     private String WorldWide= "-------WORLD WIDE-------";
@@ -46,6 +46,7 @@ public class UI extends Application {
     private ComboBox<String> cbox1 = new ComboBox<String>();
     private ComboBox<Float> cbox2 = new ComboBox<Float>();
     private ComboBox<String> cbox3 = new ComboBox<String>();
+
 
     @Override
     public void init(){
@@ -56,19 +57,14 @@ public class UI extends Application {
         fromDate.setValue(toDate.getValue().minusMonths(3));
         fromDate.setEditable(false);
         toDate.setEditable(false);
-
-//        ResultSet region_rs = search.getUniqueRegion.get();
-//        String re="";
-//        try {
-//            while (region_rs.next()){
-//                re=region_rs.getString(0);
-//                regions.add(re);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        loadData(minDate,maxDate,0.0,10.0,WorldWild);
-     }
+        regions=search.getUniqueRegion.getRegions();
+        cbox3.setId("cbx-reg");
+        cbox3.setItems(regions);
+        cbox3.setPromptText(WorldWide);
+//        cbox3.setValue(WorldWide);
+        cbox3.setVisibleRowCount(20);
+        AutoCompleteComboBoxListener<String> a = new AutoCompleteComboBoxListener(cbox3);
+    }
 
     private void setItems(TableView<Earthquake> tv){
         tv.setItems(earthquakes);
@@ -127,20 +123,10 @@ public class UI extends Application {
         toDate.setId("cbx-date");
         cbox1.setId("cbx-mag");
         cbox2.setId("cbx-mag");
-        cbox3.setId("cbx-reg");
         hBox1.getStyleClass().add("hbox");
         hBox2.getStyleClass().add("hbox");
         hBox3.getStyleClass().add("hbox");
         grid.getStyleClass().add("grid");
-
-        /** ------------for cbox3-------------
-         * need a method to extract all regions from the data
-         * then set string items to cbox3
-         cbox3.setVisibleRowCount(5);
-         cbox3.setItems(Ov regions)
-         -------------------------------------**/
-        cbox3.setItems(regions);
-        cbox3.setValue(WorldWide);
 
         grid.add(hBox1,1,0,5,1);
         grid.add(search_btn,5,3);
@@ -152,9 +138,11 @@ public class UI extends Application {
 
         search_btn.setOnAction(event ->
                 {
+                    String region=cbox3.getValue().toString();
+                    if(region==null) region= WorldWide;
                     earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
                             toDate.getValue().toString(), Double.parseDouble(cbox1.getValue().toString()),
-                            Double.parseDouble(cbox2.getValue().toString()), cbox3.getValue().toString());
+                            Double.parseDouble(cbox2.getValue().toString()), region);
                     res_size.setText(earthquakes.size()+" earthquakes found.");
                     System.out.println("1");
                     System.out.println(earthquakes.size());
@@ -175,7 +163,6 @@ public class UI extends Application {
         VBox vBox = new VBox();
         setGridPane();//and grid pane
         vBox.setSpacing(6);
-//        vBox.setPadding(new Insets(12));
         HBox hbox=new HBox();
         HBox himg=new HBox();
         himg.setMinWidth(300);
@@ -215,7 +202,7 @@ public class UI extends Application {
 
         earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
                 toDate.getValue().toString(), Double.parseDouble(cbox1.getValue().toString()),
-                Double.parseDouble(cbox2.getValue().toString()), cbox3.getValue().toString());
+                Double.parseDouble(cbox2.getValue().toString()), WorldWide);
         res_size.setText(earthquakes.size()+" earthquakes found.");
         setItems(tv);
 

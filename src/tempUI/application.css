@@ -102,15 +102,16 @@
 }
 
 .combo-box .list-cell {
-    -fx-background: #fffad7;
+    -fx-background: #fefbee;
     -fx-text-alignment: center;
 }
 
 .combo-box-base
 {
-    -fx-background-color: #3b4574, #3b4574, white, #f8ecf9;
+    -fx-background-color: #3b4574, #f1ebf4, #f1ebf4, #f8ecf9;
     -fx-background-radius: 5, 5, 4, 3;
     -fx-padding: 2;
+    -fx-text-alignment: center;
 }
 .combo-box-base:focused {
     -fx-background-color: #cbe2f4;
@@ -119,6 +120,7 @@
 
 #cbx-date{
     -fx-max-width: 150;
+    -fx-background-color: #3b4574, #f1ebf4, #f1ebf4, #f8ecf9;
 }
 #cbx-mag {
     -fx-min-width: 110;
@@ -126,6 +128,7 @@
 }
 #cbx-reg{
     -fx-min-width: 150;
+    -fx-background-color: #3b4574, #f1ebf4, #f8ecf9, #f8ecf9;
     -fx-text-alignment: center;
 }
 

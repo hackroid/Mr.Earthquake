@@ -11,3 +11,8 @@ out/production/Mr.Earthquake/com/mysqlJDBC.class
 *.class
 *.jpg
 *.png
+src/search/getUniqueRegion.java
+src/search/getUniqueRegion.java
+src/tempUI/UI.java
+src/tempUI/AutoCompleteComboBoxListener.java
+src/tempUI/UI.java
