@@ -36,7 +36,7 @@ public class UI extends Application {
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
     private String WorldWide= "-------WORLD WIDE-------";
-
+    private Label res_size = new Label();
     @Override
     public void init(){
         Locale.setDefault(Locale.US);
@@ -139,7 +139,8 @@ public class UI extends Application {
         grid.add(search_btn,5,3);
         grid.add(hBox2,1,1,4,1);
         grid.add(hBox3,1,2,4,1);
-
+        res_size.setText(earthquakes.size()+" earthquakes found.");
+        grid.add(res_size,3,3);
 //        grid.setGridLinesVisible(true);
 
         search_btn.setOnAction(event ->
@@ -147,6 +148,7 @@ public class UI extends Application {
                     earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
                             toDate.getValue().toString(), Double.parseDouble(cbox1.getValue().toString()),
                             Double.parseDouble(cbox2.getValue().toString()), cbox3.getValue().toString());
+                    res_size.setText(earthquakes.size()+" earthquakes found.");
                     System.out.println("1");
                     System.out.println(earthquakes.size());
                 setItems(tv);
