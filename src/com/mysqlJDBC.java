@@ -8,7 +8,7 @@ public class mysqlJDBC {
 		Connection conn = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://35.201.211.143:3306/earthquake", "test", "1234");
+			conn = DriverManager.getConnection("jdbc:mysql://35.201.211.143:3306/earthquake?autoReconnect=true&useSSL=false", "test", "1234");
 			return conn;
 		} catch (SQLException se) {
 			se.printStackTrace();
