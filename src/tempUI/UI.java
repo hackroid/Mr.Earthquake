@@ -42,6 +42,10 @@ public class UI extends Application {
     private DatePicker toDate = null;
     private String WorldWide= "-------WORLD WIDE-------";
     private Label res_size = new Label();
+
+    private ComboBox<String> cbox1 = new ComboBox<String>();
+    private ComboBox<Float> cbox2 = new ComboBox<Float>();
+    private ComboBox<String> cbox3 = new ComboBox<String>();
     @Override
     public void init(){
         Locale.setDefault(Locale.US);
@@ -81,9 +85,7 @@ public class UI extends Application {
         HBox hBox1= new HBox();
         HBox hBox2= new HBox();
         HBox hBox3= new HBox();
-        ComboBox<String> cbox1 = new ComboBox<String>();
-        ComboBox<Float> cbox2 = new ComboBox<Float>();
-        ComboBox<String> cbox3 = new ComboBox<String>();
+
 
         hBox1.getChildren().addAll(lb_from,fromDate,lb_to,toDate);
         hBox2.getChildren().addAll(lb_mag,cbox1,lb_mag_to,cbox2);
