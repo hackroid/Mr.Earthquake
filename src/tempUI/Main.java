@@ -15,21 +15,24 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import search.input;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Main extends Application {
         private final String cssFile = Main.class.getClassLoader()
                                         .getResource("tempUI/application.css")
                                         .toString();
     
-    private final String dataFile = Main.class
-    .getClassLoader()
-    .getResource("earthquakes.csv")
-    .toString().replace("file:","");
+//    private final String dataFile = Main.class
+//    .getClassLoader()
+//    .getResource("earthquakes.csv")
+//    .toString().replace("file:","");
     
     private static ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
     private static TableView<Earthquake> tv = new TableView<Earthquake>();
@@ -38,43 +41,57 @@ public class Main extends Application {
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
 
-    /**Need to extract the min&max date to set default date
+//    /**Need to extract the min&max date to set default date
      private String     minDate = null;
      private String     maxDate = null;
-     **/
+     private String WorldWide= "-------WORLD WIDE-------";
+//     **/
     
     //read data from .csv file
-    static void loadData(String file){
-        try(BufferedReader reader
-            = Files.newBufferedReader(Paths.get(file))){
-            String  line = null;
-            line = reader.readLine();//ignore header
-            String[] fields;
-            while((line = reader.readLine())!=null){
-                fields = line.split(",");
-                earthquakes.add(new Earthquake(fields[0],fields[1].replace("\"",""),
-                                               Double.parseDouble(fields[2]),Double.parseDouble(fields[3]),
-                                               Double.parseDouble(fields[4]),Double.parseDouble(fields[5]),fields[6]));
+//    static void loadData(String file){
+//        try(BufferedReader reader
+//            = Files.newBufferedReader(Paths.get(file))){
+//            String  line = null;
+//            line = reader.readLine();//ignore header
+//            String[] fields;
+//            while((line = reader.readLine())!=null){
+//                fields = line.split(",");
+//                earthquakes.add(new Earthquake(fields[0],fields[1].replace("\"",""),
+//                                               Double.parseDouble(fields[2]),Double.parseDouble(fields[3]),
+//                                               Double.parseDouble(fields[4]),Double.parseDouble(fields[5]),fields[6]));
+//            }
+//        } catch (IOException e) {
+//            System.err.format("IOException: %s%n", e);
+//        } catch (NumberFormatException e){
+//            System.err.format("NumberFormatException: %s%n", e);
+//        }
+//    }
+
+    public static void loadData(String UTC_date_start, String UTC_date_end, double magS, double magX, String region){
+        input data = new input(UTC_date_start, UTC_date_end, magS, magX,region);
+        ResultSet rs= data.search();
+        try {
+            while(rs.next()){
+                System.out.println(rs);
             }
-        } catch (IOException e) {
-            System.err.format("IOException: %s%n", e);
-        } catch (NumberFormatException e){
-            System.err.format("NumberFormatException: %s%n", e);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     
     @Override
     public void init(){
-        loadData(dataFile);
+//        loadData(minDate,maxDate,0.0,10.0,WorldWild);
+//        loadData(dataFile);
     }
     
     private void setItems(TableView<Earthquake> tv){
         tv.setItems(earthquakes);
     }
     
-    public static void start(String[] args) {
-               launch(args);
-    }
+//    public static void start(String[] args) {
+//               launch(args);
+//    }
     
     public void setGridPane(){
         final Label lb_from = new Label(" From: ");
@@ -139,7 +156,7 @@ public class Main extends Application {
          cbox3.setVisibleRowCount(5);
          cbox3.setItems(Ov regions)
          -------------------------------------**/
-        cbox3.setValue("-------WORLD WILD-------");
+        cbox3.setValue(WorldWide);
 
         grid.add(hBox1,1,0,5,1);
         grid.add(search_btn,5,3);
@@ -156,11 +173,9 @@ public class Main extends Application {
         lb_region.getStyleClass().add("label-grid");
 
 //        grid.setGridLinesVisible(true);
-        /**Method: searQuakes
-         search_btn.setOnAction(event ->
-         searchQuakes(fromDate.getValue().toString(),toDate.getValue().toString(),cbox1.getValue.toString()
-         ,cbox2.getValue.toString(),cbox3.getValue.toString());
-         );
+        /**Method: searQuake
+         search_btn.setOnAction(event -> loadData(fromDate.getValue().toString(),toDate.getValue().toString(),Double.parseDouble(cbox1.getValue().toString()),
+         Double.parseDouble(cbox2.getValue().toString()),cbox3.getValue().toString()));
          **/
     }
 
@@ -173,7 +188,7 @@ public class Main extends Application {
         VBox vBox = new VBox();
         vBox.setSpacing(6);
         vBox.setPadding(new Insets(12));
-        vBox.setAlignment(Pos.CENTER);
+//        vBox.setAlignment(Pos.CENTER);
         setGridPane();
 
         HBox hbox=new HBox();
@@ -191,19 +206,26 @@ public class Main extends Application {
 
         TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("id");
         c1.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getId()));
+        tv.getColumns().add(c1);
         TableColumn<Earthquake,String> c2 = new TableColumn<Earthquake, String>("UTC_date");
         c2.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getUTC_date()));
+        tv.getColumns().add(c2);
         TableColumn<Earthquake, Number> c3 = new TableColumn<Earthquake, Number>("latiude");
         c3.setCellValueFactory(e -> new ReadOnlyDoubleWrapper(e.getValue().getLatiude()));
+        tv.getColumns().add(c3);
         TableColumn<Earthquake,Number> c4 = new TableColumn<Earthquake, Number>("longitude");
         c4.setCellValueFactory(e -> new ReadOnlyDoubleWrapper(e.getValue().getLongitude()));
+        tv.getColumns().add(c4);
         TableColumn<Earthquake,Number> c5 = new TableColumn<Earthquake, Number>("depth");
         c5.setCellValueFactory(e -> new ReadOnlyDoubleWrapper(e.getValue().getDepth()));
+        tv.getColumns().add(c5);
         TableColumn<Earthquake,Number> c6 = new TableColumn<Earthquake, Number>("magnitude");
         c6.setCellValueFactory(e -> new ReadOnlyDoubleWrapper(e.getValue().getMagnitude()));
+        tv.getColumns().add(c6);
         TableColumn<Earthquake,String> c7 = new TableColumn<Earthquake, String>("region");
         c7.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getRegion()));
-        tv.getColumns().addAll(c1,c2,c3,c4,c5,c6,c7);
+        tv.getColumns().add(c7);
+
         setItems(tv);
 
         //create a tabpane
@@ -221,11 +243,11 @@ public class Main extends Application {
         tab2.setClosable(false);
         //tab3: chart
         tab3 = new Tab();
-        tab3.setText("Chart");
+        tab3.setText("Chart1");
         tab3.setClosable(false);
         //tab4: anything else?
         tab4 = new Tab();
-        tab4.setText("Reserved");
+        tab4.setText("Chart2");
         tab4.setClosable(false);
         //set default tab: tab1 - table view
         SingleSelectionModel<Tab> selectionModel = tabpane.getSelectionModel();
