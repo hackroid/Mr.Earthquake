@@ -1,5 +1,6 @@
 package tempUI;
 	
+import Map.MapView;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -7,7 +8,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,19 +17,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import search.input;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Locale;
 
-public class Main extends Application {
-        private final String cssFile = Main.class.getClassLoader()
+public class UI extends Application {
+        private final String cssFile = UI.class.getClassLoader()
                                         .getResource("tempUI/application.css")
                                         .toString();
     
-//    private final String dataFile = Main.class
+//    private final String dataFile = UI.class
 //    .getClassLoader()
 //    .getResource("earthquakes.csv")
 //    .toString().replace("file:","");
@@ -37,10 +35,10 @@ public class Main extends Application {
     private static ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
     private static TableView<Earthquake> tv = new TableView<Earthquake>();
     private static GridPane grid = new GridPane();
+    private MapView mc;
     
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
-
 //    /**Need to extract the min&max date to set default date
      private String     minDate = null;
      private String     maxDate = null;
@@ -66,21 +64,16 @@ public class Main extends Application {
 //            System.err.format("NumberFormatException: %s%n", e);
 //        }
 //    }
-
-    public static void loadData(String UTC_date_start, String UTC_date_end, double magS, double magX, String region){
-        input data = new input(UTC_date_start, UTC_date_end, magS, magX,region);
-        ResultSet rs= data.search();
-        try {
-            while(rs.next()){
-                System.out.println(rs);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     
     @Override
     public void init(){
+        Locale.setDefault(Locale.US);
+        fromDate = new DatePicker();
+        toDate = new DatePicker();
+        toDate.setValue(LocalDate.now());
+        fromDate.setValue(toDate.getValue().minusWeeks(1));
+        fromDate.setEditable(false);
+        toDate.setEditable(false);
 //        loadData(minDate,maxDate,0.0,10.0,WorldWild);
 //        loadData(dataFile);
     }
@@ -101,9 +94,9 @@ public class Main extends Application {
         final Label lb_mag_to = new Label("  ~   ");
         final Label lb_region = new Label(" Region: ");
         search_btn.setId("search-button");
-        fromDate = new DatePicker();
+//        fromDate = new DatePicker();
         //        fromDate.setValue(minDate);
-        toDate = new DatePicker();
+//        toDate = new DatePicker();
         //        toDate.setValue(maxDate);
         HBox hBox1= new HBox();
         HBox hBox2= new HBox();
@@ -128,19 +121,20 @@ public class Main extends Application {
         cbox2.setVisibleRowCount(5);
         cbox2.setValue(new Float(9.0f));
         ObservableList<Float> mag_range_max = FXCollections.observableArrayList();
-        for (float i=1.0f; i<=10.0; i=i+1.0f){
+        for (float i=1.0f; i<=9.0; i=i+1.0f){
             mag_range_max.addAll(new Float(i));
         }
         cbox2.setItems(mag_range_max);
 
         //changelistener for cbox1, making sure values in cbox2 larger than cbox1
         cbox1.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
-            for (float i=1.0f;i<=10.0;i=i+1.0f){
+            for (float i=1.0f;i<=9.0;i=i+1.0f){
                 cbox2.getItems().remove(i);
             }
-            for(float i=Float.parseFloat(t1)+1.0f;i<=10.0;i=i+1.0f) {
+            for(float i=Float.parseFloat(t1)+1.0f;i<=9.0;i=i+1.0f) {
                 cbox2.getItems().add(i);
             }
+            cbox2.setValue(new Float(9.0));
         });
 
         fromDate.setId("cbx-date");
@@ -241,6 +235,9 @@ public class Main extends Application {
         tab2 = new Tab();
         tab2.setText("World Map");
         tab2.setClosable(false);
+        mc=new MapView();
+        Group temp=mc.setMap("Mercator.jpg");
+        tab2.setContent(temp);
         //tab3: chart
         tab3 = new Tab();
         tab3.setText("Chart1");
