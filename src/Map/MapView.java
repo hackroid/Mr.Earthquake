@@ -19,12 +19,12 @@ public class MapView{
     */
     private ImageView imageView;
     private Group group;
-    private Group EQP; //earthquake point
-
+    private String mapimg;
     /*
     * list of earthquake
     */
-    public void setMap(String mapimg){
+    public void setMap(String map){
+        mapimg = map;
         Image image= new Image(mapimg);
         imageView = new ImageView();
         imageView.setImage(image);
@@ -39,11 +39,10 @@ public class MapView{
         MapUtil mu=new MapUtil();
         for(int i=0;i<eq.size();i++){
             Node temp=mu.showEQ(eq.get(i));
-            EQP.getChildren().add(temp);
+            group.getChildren().add(temp);
         }
-        group.getChildren().add(EQP);
     }
     public void removeEQ(){
-        group.getChildren().remove(EQP);
+        setMap(mapimg);
     }
 }
