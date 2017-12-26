@@ -43,8 +43,13 @@ public class MapUtil {
                 double res = (mapHigth/164)*(-value+90);
                 return res;
         }else if(mark==2){
-            double res = (mapWidth/360)*(180-value);
-            return res;
+            if(value>=0){
+                double res = (mapWidth/360)*(value);
+                return res;
+            }else{
+                double res = (mapWidth/360)*(360+value);
+                return res;
+            }
         }
         return -1;
     }
