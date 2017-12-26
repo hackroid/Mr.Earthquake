@@ -28,33 +28,15 @@ public class TransformUtil {
                         rs.getString(2).replace("\"","")+"  "+rs.getString(3),
                         rs.getDouble(4),
                         rs.getDouble(5),
-                        rs.getDouble(6),
                         rs.getDouble(7),
+                        rs.getDouble(6),
                         rs.getString(8)));
-
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return earthquakes;
     }
-//      list all region
-//    public static ObservableList<Earthquake> RegionList(ResultSet rs) {
-//        ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
-//        try {
-//            while (rs.next()) {
-//                earthquakes.add(new Earthquake(rs.getString(0),
-//                        rs.getString(1).replace("\"",""),
-//                        rs.getDouble(2),
-//                        rs.getDouble(3),
-//                        rs.getDouble(4),
-//                        rs.getDouble(5),
-//                        ""));
-//
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return earthquakes;
-//    }
+
 }
