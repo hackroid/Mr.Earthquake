@@ -13,7 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import tempUI.Earthquake;
 
-public class MapView extends StackPane{
+public class MapView{
     /*
     private double mapHigth;
     private double mapWidth;
@@ -24,6 +24,11 @@ public class MapView extends StackPane{
     /*
     * list of earthquake
     */
+
+    /**
+     *
+     * @param map map image uri
+     */
     public void setMap(String map){
         mapimg = map;
         Image image= new Image(mapimg);
@@ -32,9 +37,19 @@ public class MapView extends StackPane{
         group=new Group();
         group.getChildren().add(imageView);
     }
+
+    /**
+     * return node object for insert to table.
+     * @return
+     */
     public Node getGroup(){
         return group;
     }
+
+    /**
+     * using MapUtil to draw circle list.
+     * @param eq observablelist of type Earthquake.
+     */
     public void setEQ(ObservableList<Earthquake> eq){
         removeEQ();
         MapUtil mu=new MapUtil();
@@ -45,6 +60,10 @@ public class MapView extends StackPane{
             }
         }
     }
+
+    /**
+     * clear map points, for next add.
+     */
     public void removeEQ(){
         setMap(mapimg);
     }

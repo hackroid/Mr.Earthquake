@@ -7,6 +7,10 @@ import javafx.collections.ObservableList;
 import java.sql.*;
 
 public class getUniqueRegion {
+	/**
+	 * To combox list.
+	 * @return list of region, to combox list.
+	 */
 	public static ObservableList<String> getRegions() {
 		ObservableList<String> regions = FXCollections.observableArrayList();
 		ResultSet rs = null;

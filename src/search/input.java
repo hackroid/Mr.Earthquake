@@ -11,6 +11,9 @@ public class input {
 	private static double magX;
 	private static String region;
 
+	/**
+	 * initialize the javabeans.
+	 */
 	public input() {
 		this.UTC_date_start = null;
 		this.UTC_date_end = null;
@@ -19,6 +22,14 @@ public class input {
 		this.region = null;
 	}
 
+	/**
+	 * java bean.
+	 * @param UTC_date_start
+	 * @param UTC_date_end
+	 * @param magS
+	 * @param magX
+	 * @param region
+	 */
 	public input(String UTC_date_start, String UTC_date_end, double magS, double magX, String region) {
 		this.UTC_date_start = UTC_date_start;
 		this.UTC_date_end = UTC_date_end;
@@ -27,6 +38,10 @@ public class input {
 		this.region = region;
 	}
 
+	/**
+	 * To deal with input condition. Exception handling.
+	 * @return state integer.
+	 */
 	public static int emptyInput() {
 		if ((UTC_date_start == null && UTC_date_end == null && magS == 0 && magX == 0 && region == null) || 
 				(magS > magX)){
@@ -37,6 +52,10 @@ public class input {
 		return 1;
 	}
 
+	/**
+	 * passing quest statement to database.
+	 * @return resultset to pass the quest result to TransformUtil
+	 */
 	public static ResultSet search() {
 		ResultSet rs = null;
 		Connection conn = mysqlJDBC.getConnection();
