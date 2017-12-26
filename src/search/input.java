@@ -2,6 +2,7 @@ package search;
 
 import java.sql.*;
 import com.mysqlJDBC;
+import tempUI.UI;
 
 public class input {
 	private static String UTC_date_start;
@@ -53,9 +54,9 @@ public class input {
 		if (magX != 0) {
 			sql += (" and magnitude < " + Double.toString(magX));
 		}
-//		if (region != null) {
-//			sql += (" and region = \'" + region + "\'");
-//		}
+		if (region!= UI.WorldWide && region != null) {
+			sql += (" and region = \'" + region + "\'");
+		}
 		try {
 			rs = stmt.executeQuery(sql);
 		} catch (SQLException e) {

@@ -25,7 +25,7 @@ public class TransformUtil {
             System.out.println(rs.getFetchSize());
             while (rs.next()) {
                 earthquakes.add(new Earthquake(rs.getString(1),
-                        rs.getString(2).replace("\"","")+rs.getString(3),
+                        rs.getString(2).replace("\"","")+"  "+rs.getString(3),
                         rs.getDouble(4),
                         rs.getDouble(5),
                         rs.getDouble(6),
@@ -36,7 +36,6 @@ public class TransformUtil {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(earthquakes.size());
         return earthquakes;
     }
 //      list all region

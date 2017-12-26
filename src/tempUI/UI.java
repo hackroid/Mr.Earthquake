@@ -5,10 +5,8 @@ import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.WritableObjectValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -17,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import search.input;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +37,7 @@ public class UI extends Application {
     private Tab tab1,tab2,tab3,tab4;
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
-    private String WorldWide= "-------WORLD WIDE-------";
+    public static String WorldWide= "-------WORLD WIDE-------";
     private Label res_size = new Label();
 
     private ComboBox<String> cbox1 = new ComboBox<String>();
@@ -54,19 +51,26 @@ public class UI extends Application {
         fromDate = new DatePicker();
         toDate = new DatePicker();
         toDate.setValue(LocalDate.now());
-        fromDate.setValue(toDate.getValue().minusMonths(3));
+        fromDate.setValue(toDate.getValue().minusMonths(6));
         fromDate.setEditable(false);
         toDate.setEditable(false);
         regions=search.getUniqueRegion.getRegions();
         cbox3.setId("cbx-reg");
         cbox3.setItems(regions);
         cbox3.setPromptText(WorldWide);
-//        cbox3.setValue(WorldWide);
+        cbox3.setValue(WorldWide);
         cbox3.setVisibleRowCount(20);
-        AutoCompleteComboBoxListener<String> a = new AutoCompleteComboBoxListener(cbox3);
+        AutoCompleteComboBoxListener<String> autoBox = new AutoCompleteComboBoxListener(cbox3);
     }
 
-    private void setItems(TableView<Earthquake> tv){
+    private void refreshItems(TableView<Earthquake> tv) {
+        if(cbox3.getValue()==null||cbox3.getValue().length()==0) {cbox3.setValue(WorldWide);}
+        earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
+                toDate.getValue().toString(), Double.parseDouble(cbox1.getValue().toString()),
+                Double.parseDouble(cbox2.getValue().toString()), cbox3.getValue());
+        res_size.setText(earthquakes.size()+" earthquakes found.");
+        System.out.println("1");
+        System.out.println(earthquakes.size());
         tv.setItems(earthquakes);
     }
 
@@ -138,17 +142,9 @@ public class UI extends Application {
 
         search_btn.setOnAction(event ->
                 {
-                    String region=cbox3.getValue().toString();
-                    if(region==null) region= WorldWide;
-                    earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
-                            toDate.getValue().toString(), Double.parseDouble(cbox1.getValue().toString()),
-                            Double.parseDouble(cbox2.getValue().toString()), region);
-                    res_size.setText(earthquakes.size()+" earthquakes found.");
-                    System.out.println("1");
-                    System.out.println(earthquakes.size());
-                setItems(tv);
-                mc.setEQ(earthquakes);
-                tab2.setContent(mc.getGroup());
+                    refreshItems(tv);
+                    mc.setEQ(earthquakes);
+                    tab2.setContent(mc.getGroup());
                 }
         );
 
@@ -200,11 +196,7 @@ public class UI extends Application {
         c7.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getRegion()));
         tv.getColumns().add(c7);
 
-        earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
-                toDate.getValue().toString(), Double.parseDouble(cbox1.getValue().toString()),
-                Double.parseDouble(cbox2.getValue().toString()), WorldWide);
-        res_size.setText(earthquakes.size()+" earthquakes found.");
-        setItems(tv);
+        refreshItems(tv);
 
         //create a tabpane
         tabpane = new TabPane();
@@ -234,7 +226,6 @@ public class UI extends Application {
         //set default tab: tab1 - table view
         SingleSelectionModel<Tab> selectionModel = tabpane.getSelectionModel();
         selectionModel.select(tab1);
-
         tabpane.getTabs().addAll(tab1,tab2,tab3,tab4);
         stage.setScene(scene);
         stage.show();

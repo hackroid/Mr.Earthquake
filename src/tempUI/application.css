@@ -11,7 +11,7 @@
 .hbox-img{
     -fx-background-image: url("../candle.jpg");
     -fx-background-repeat: no-repeat;
-    -fx-opacity: 70%;
+    -fx-opacity: 80%;
 }
 .grid {
     -fx-hgap: 20;

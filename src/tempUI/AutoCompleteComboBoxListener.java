@@ -50,6 +50,7 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
             caretPos = comboBox.getEditor().getCaretPosition();
         }
 
+
         if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT
                 || event.isControlDown() || event.getCode() == KeyCode.HOME
                 || event.getCode() == KeyCode.END || event.getCode() == KeyCode.TAB) {
@@ -59,6 +60,8 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
         ObservableList list = FXCollections.observableArrayList();
         for (int i=0; i<data.size(); i++) {
             if(data.get(i).toString().toLowerCase().startsWith(
+                    AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase())
+             ||data.get(i).toString().toLowerCase().contains(
                     AutoCompleteComboBoxListener.this.comboBox
                             .getEditor().getText().toLowerCase())) {
                 list.add(data.get(i));
@@ -74,6 +77,7 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
         if(!list.isEmpty()) {
             comboBox.show();
         }
+
     }
 
     private void moveCaret(int textLength) {
