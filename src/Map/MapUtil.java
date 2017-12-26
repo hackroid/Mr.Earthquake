@@ -29,7 +29,6 @@ public class MapUtil {
             circle.setCenterY(convert(1,eq.getLatiude()));
             circle.setFill(Color.RED);
             circle.setRadius(3.0f);
-            System.out.println(eq.getLatiude());
             return circle;
     }
     /**
