@@ -31,6 +31,10 @@ public class Earthquake {
         this.region = region;
     }
 
+    @Override
+    public String toString(){
+        return id+" "+UTC_date+" "+latiude+" "+longitude+" "+depth+" "+magnitude+" "+region;
+    }
     public String getId() {
         return id;
     }

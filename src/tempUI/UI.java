@@ -7,10 +7,14 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -19,6 +23,7 @@ import javafx.stage.Stage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -37,7 +42,7 @@ public class UI extends Application {
     private Tab tab1,tab2,tab3,tab4;
     private DatePicker fromDate = null;
     private DatePicker toDate = null;
-    public static String WorldWide= "-------WORLD WIDE-------";
+    public static String WorldWide= "------------WORLD WIDE------------";
     private Label res_size = new Label();
 
     private ComboBox<String> cbox1 = new ComboBox<String>();
@@ -77,21 +82,20 @@ public class UI extends Application {
     public void setGridPane(){
         final Label lb_from = new Label(" From: ");
         final Label lb_to= new Label(" To: ");
-        final Button search_btn = new Button("Search");
         final Label lb_mag = new Label(" Magnitude: ");
         final Label lb_mag_to = new Label("  ~   ");
         final Label lb_region = new Label(" Region: ");
-        search_btn.setId("search-button");
+        final Button search_btn = new Button("Search");
+        final Button update_btn = new Button("Update");
 
         HBox hBox1= new HBox();
         HBox hBox2= new HBox();
         HBox hBox3= new HBox();
-
-
+        HBox hBox4= new HBox();
         hBox1.getChildren().addAll(lb_from,fromDate,lb_to,toDate);
         hBox2.getChildren().addAll(lb_mag,cbox1,lb_mag_to,cbox2);
         hBox3.getChildren().addAll(lb_region,cbox3);
-
+        hBox4.getChildren().addAll(res_size,update_btn,search_btn);
         //for cbox1
         ObservableList<String> mag_range
                 = FXCollections.observableArrayList("0.0","1.0","2.0","3.0"
@@ -127,18 +131,21 @@ public class UI extends Application {
         toDate.setId("cbx-date");
         cbox1.setId("cbx-mag");
         cbox2.setId("cbx-mag");
+        search_btn.setId("search-button");
+        update_btn.setId("update-button");
         hBox1.getStyleClass().add("hbox");
         hBox2.getStyleClass().add("hbox");
         hBox3.getStyleClass().add("hbox");
+        hBox4.getStyleClass().add("hbox4");
+        hBox4.setSpacing(40);
         grid.getStyleClass().add("grid");
 
         grid.add(hBox1,1,0,5,1);
-        grid.add(search_btn,5,3);
         grid.add(hBox2,1,1,4,1);
         grid.add(hBox3,1,2,4,1);
+        grid.add(hBox4,2,3,4,1);
         res_size.setText(earthquakes.size()+" earthquakes found.");
-        grid.add(res_size,3,3);
-//        grid.setGridLinesVisible(true);
+        grid.setGridLinesVisible(true);
 
         search_btn.setOnAction(event ->
                 {
@@ -147,33 +154,9 @@ public class UI extends Application {
                     tab2.setContent(mc.getGroup());
                 }
         );
-
     }
 
-    @Override
-    public void start(Stage stage) {
-        stage.setTitle("Display EarthQuakes");
-        Group root = new Group();
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(cssFile);
-        VBox vBox = new VBox();
-        setGridPane();//and grid pane
-        vBox.setSpacing(6);
-        HBox hbox=new HBox();
-        HBox himg=new HBox();
-        himg.setMinWidth(300);
-        himg.setMinHeight(200);
-        himg.getStyleClass().add("hbox-img");
-        hbox.getChildren().addAll(grid,himg);
-
-        vBox.getChildren().add(hbox);
-        root.getChildren().add(vBox);
-        tv.setPrefWidth(860);
-        tv.setPrefHeight(500);
-
-        hbox.getStyleClass().add("hbox");
-        vBox.getStyleClass().add("vbox");
-
+    public void setTable(){
         TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("id");
         c1.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getId()));
         tv.getColumns().add(c1);
@@ -195,8 +178,54 @@ public class UI extends Application {
         TableColumn<Earthquake,String> c7 = new TableColumn<Earthquake, String>("region");
         c7.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getRegion()));
         tv.getColumns().add(c7);
-
         refreshItems(tv);
+        tv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        MenuItem item = new MenuItem("Copy");
+        item.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ObservableList rowList = (ObservableList) tv.getSelectionModel().getSelectedItems();
+                StringBuilder clipboardString = new StringBuilder();
+                for (Iterator it = rowList.iterator(); it.hasNext();) {
+                    Earthquake row = (Earthquake)it.next();
+                    String cell=""; cell=row.toString();
+                    clipboardString.append(cell);
+                    clipboardString.append('\n');
+                }
+                final ClipboardContent content = new ClipboardContent();
+                content.putString(clipboardString.toString());
+                Clipboard.getSystemClipboard().setContent(content);
+            }
+        });
+        ContextMenu menu = new ContextMenu();
+        menu.getItems().add(item);
+        tv.setContextMenu(menu);
+    }
+
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("Display EarthQuakes");
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(cssFile);
+        VBox vBox = new VBox();
+        setGridPane();//and grid pane
+//        vBox.setSpacing(6);
+        HBox hbox=new HBox();
+        HBox himg=new HBox();
+        himg.setMinWidth(300);
+        himg.setMinHeight(200);
+        himg.getStyleClass().add("hbox-img");
+        hbox.getChildren().addAll(grid,himg);
+
+        vBox.getChildren().add(hbox);
+        root.getChildren().add(vBox);
+        tv.setPrefWidth(860);
+        tv.setPrefHeight(500);
+
+        hbox.getStyleClass().add("hbox");
+        vBox.getStyleClass().add("vbox");
+        setTable();
 
         //create a tabpane
         tabpane = new TabPane();
