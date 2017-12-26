@@ -28,8 +28,8 @@ public class TransformUtil {
                         rs.getString(2).replace("\"","")+"  "+rs.getString(3),
                         rs.getDouble(4),
                         rs.getDouble(5),
-                        rs.getDouble(6),
                         rs.getDouble(7),
+                        rs.getDouble(6),
                         rs.getString(8)));
 
             }
