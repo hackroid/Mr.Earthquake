@@ -93,30 +93,30 @@
     -fx-text-fill: #8ba4c9;
 }
 
-#update-button {
+.button {
     -fx-text-fill: white;
     -fx-min-width: 70;
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#ffdbd4, #3b4574);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
-#update-button:hover {
+.button:hover {
     -fx-background-color: linear-gradient(#90a1ad, #dde4f4);
     -fx-text-fill: white;
 }
 
-#search-button {
-    -fx-text-fill: white;
-    -fx-min-width: 70;
-    -fx-font-weight: bold;
-    -fx-background-radius: 5;
-    -fx-background-color: linear-gradient(#ffdbd4, #3b4574);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-}
-#search-button:hover {
-    -fx-background-color: linear-gradient(#90a1ad, #dde4f4);
-    -fx-text-fill: white;
-}
+/*#search-button {*/
+    /*-fx-text-fill: white;*/
+    /*-fx-min-width: 70;*/
+    /*-fx-font-weight: bold;*/
+    /*-fx-background-radius: 5;*/
+    /*-fx-background-color: linear-gradient(#ffdbd4, #3b4574);*/
+    /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );*/
+/*}*/
+/*#search-button:hover {*/
+    /*-fx-background-color: linear-gradient(#90a1ad, #dde4f4);*/
+    /*-fx-text-fill: white;*/
+/*}*/
 .combo-box .list-cell {
     -fx-background: #fefbee;
     -fx-text-alignment: center;

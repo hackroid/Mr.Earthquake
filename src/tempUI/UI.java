@@ -7,19 +7,31 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -31,7 +43,6 @@ public class UI extends Application {
     private final String cssFile = UI.class.getClassLoader()
                                         .getResource("tempUI/application.css")
                                         .toString();
-    
     private static ObservableList<Earthquake> earthquakes = FXCollections.observableArrayList();
     private static TableView<Earthquake> tv = new TableView<Earthquake>();
     private static GridPane grid = new GridPane();
@@ -44,11 +55,21 @@ public class UI extends Application {
     private DatePicker toDate = null;
     public static String WorldWide= "------------WORLD WIDE------------";
     private Label res_size = new Label();
-
+//for gridpane
     private ComboBox<String> cbox1 = new ComboBox<String>();
     private ComboBox<Float> cbox2 = new ComboBox<Float>();
     private ComboBox<String> cbox3 = new ComboBox<String>();
-
+//for chart1
+    private static ObservableList<XYChart.Data<String,Number>> data =
+            FXCollections.observableArrayList();
+    private Button saveButton = new Button("Save Chart");
+    final CategoryAxis xAxis = new CategoryAxis();
+    final NumberAxis yAxis = new NumberAxis();
+    final BarChart<String,Number> bc =
+            new BarChart<String,Number>(xAxis,yAxis);
+    private String[] magRange = {"<=3.0", "3.0 to 4.0", "4.0 to 5.0", "5.0 to 6.0", "6.0 to 7.0",">=7.0"};
+    private VBox  chartBox = new VBox();
+    private XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
 
     @Override
     public void init(){
@@ -56,7 +77,7 @@ public class UI extends Application {
         fromDate = new DatePicker();
         toDate = new DatePicker();
         toDate.setValue(LocalDate.now());
-        fromDate.setValue(toDate.getValue().minusMonths(6));
+        fromDate.setValue(toDate.getValue().minusMonths(1));
         fromDate.setEditable(false);
         toDate.setEditable(false);
         regions=search.getUniqueRegion.getRegions();
@@ -66,6 +87,16 @@ public class UI extends Application {
         cbox3.setValue(WorldWide);
         cbox3.setVisibleRowCount(20);
         AutoCompleteComboBoxListener<String> autoBox = new AutoCompleteComboBoxListener(cbox3);
+        bc.getData().add(series);
+        bc.setPrefWidth(400);
+        bc.setPrefHeight(400);
+        chartBox.setPadding(new Insets(10));
+        chartBox.setAlignment(Pos.CENTER);
+        chartBox.getChildren().add(bc);
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().add(saveButton);
+        chartBox.getChildren().add(hbox);
     }
 
     private void refreshItems(TableView<Earthquake> tv) {
@@ -79,6 +110,33 @@ public class UI extends Application {
         tv.setItems(earthquakes);
     }
 
+    public void refreshChart(){
+        data.clear();
+        double mag;
+        bc.setTitle("Chart by Magnitude Range");
+        xAxis.setLabel("Magnitude");
+        yAxis.setLabel("Number of Earthquakes");
+        bc.setLegendVisible(false);
+        bc.setAnimated(false);
+        int count[]=new int[6];
+        Iterator it = earthquakes.iterator();
+        while(it.hasNext()) {
+            Earthquake e = (Earthquake) it.next();
+            mag=e.getMagnitude();
+            if (mag <= 3.0) { ++count[0]; }
+            else if (mag < 4.0) { ++count[1]; }
+            else if (mag < 5.0) { ++count[2]; }
+            else if (mag < 6.0) { ++count[3]; }
+            else if(mag < 7.0){ ++count[4]; }
+            else{ ++count[5]; }
+        }
+        for(int i=0;i<6; ++i) {
+            data.add(new XYChart.Data<String, Number>(magRange[i], count[i]));
+        }
+        series.setData(data);
+        chartBox.setAlignment(Pos.CENTER);
+    }
+
     public void setGridPane(){
         final Label lb_from = new Label(" From: ");
         final Label lb_to= new Label(" To: ");
@@ -87,7 +145,6 @@ public class UI extends Application {
         final Label lb_region = new Label(" Region: ");
         final Button search_btn = new Button("Search");
         final Button update_btn = new Button("Update");
-
         HBox hBox1= new HBox();
         HBox hBox2= new HBox();
         HBox hBox3= new HBox();
@@ -126,20 +183,18 @@ public class UI extends Application {
                 cbox2.setValue(tmp);
             }
         });
-
         fromDate.setId("cbx-date");
         toDate.setId("cbx-date");
         cbox1.setId("cbx-mag");
         cbox2.setId("cbx-mag");
-        search_btn.setId("search-button");
-        update_btn.setId("update-button");
+        search_btn.getStyleClass().add("button");
+        update_btn.getStyleClass().add("button");
         hBox1.getStyleClass().add("hbox");
         hBox2.getStyleClass().add("hbox");
         hBox3.getStyleClass().add("hbox");
         hBox4.getStyleClass().add("hbox4");
         hBox4.setSpacing(40);
         grid.getStyleClass().add("grid");
-
         grid.add(hBox1,1,0,5,1);
         grid.add(hBox2,1,1,4,1);
         grid.add(hBox3,1,2,4,1);
@@ -147,35 +202,38 @@ public class UI extends Application {
         res_size.setText(earthquakes.size()+" earthquakes found.");
         grid.setGridLinesVisible(true);
 
-        search_btn.setOnAction(event ->
-                {
+        search_btn.setOnAction(event -> {
                     refreshItems(tv);
-                    mc.setEQ(earthquakes);
-                    tab2.setContent(mc.getGroup());
+                    mc.setEQ(earthquakes); tab2.setContent(mc.getGroup());
+                    refreshChart(); tab3.setContent(chartBox);
                 }
         );
+//------------------------------------------------------------------------
+        update_btn.setOnAction(event -> {
+
+        });
     }
 
     public void setTable(){
-        TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("id");
+        TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("Id");
         c1.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getId()));
         tv.getColumns().add(c1);
         TableColumn<Earthquake,String> c2 = new TableColumn<Earthquake, String>("UTC_date");
         c2.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getUTC_date()));
         tv.getColumns().add(c2);
-        TableColumn<Earthquake, Number> c3 = new TableColumn<Earthquake, Number>("latiude");
+        TableColumn<Earthquake, Number> c3 = new TableColumn<Earthquake, Number>("Latitude");
         c3.setCellValueFactory(e -> new ReadOnlyDoubleWrapper(e.getValue().getLatiude()));
         tv.getColumns().add(c3);
-        TableColumn<Earthquake,Number> c4 = new TableColumn<Earthquake, Number>("longitude");
+        TableColumn<Earthquake,Number> c4 = new TableColumn<Earthquake, Number>("Longitude");
         c4.setCellValueFactory(e -> new ReadOnlyDoubleWrapper(e.getValue().getLongitude()));
         tv.getColumns().add(c4);
-        TableColumn<Earthquake,Number> c5 = new TableColumn<Earthquake, Number>("depth");
+        TableColumn<Earthquake,Number> c5 = new TableColumn<Earthquake, Number>("Depth");
         c5.setCellValueFactory(e -> new ReadOnlyDoubleWrapper(e.getValue().getDepth()));
         tv.getColumns().add(c5);
-        TableColumn<Earthquake,Number> c6 = new TableColumn<Earthquake, Number>("magnitude");
+        TableColumn<Earthquake,Number> c6 = new TableColumn<Earthquake, Number>("Magnitude");
         c6.setCellValueFactory(e -> new ReadOnlyDoubleWrapper(e.getValue().getMagnitude()));
         tv.getColumns().add(c6);
-        TableColumn<Earthquake,String> c7 = new TableColumn<Earthquake, String>("region");
+        TableColumn<Earthquake,String> c7 = new TableColumn<Earthquake, String>("Region");
         c7.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getRegion()));
         tv.getColumns().add(c7);
         refreshItems(tv);
@@ -248,6 +306,24 @@ public class UI extends Application {
         tab3 = new Tab();
         tab3.setText("Chart1");
         tab3.setClosable(false);
+        refreshChart();
+        saveButton.getStyleClass().add("button");
+        saveButton.setOnAction((e)->{
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Chart");
+            fileChooser.setInitialFileName("barchart.png");
+            File selectedFile = fileChooser.showSaveDialog(stage);
+            if (selectedFile != null) {
+                try {
+                    WritableImage snap = bc.snapshot(null, null);
+                    ImageIO.write(SwingFXUtils.fromFXImage(snap, null),
+                            "png", selectedFile);
+                } catch (IOException exc) {
+                    System.err.println(exc.getMessage());
+                }
+            }
+        });
+        tab3.setContent(chartBox);
         //tab4: anything else?
         tab4 = new Tab();
         tab4.setText("Chart2");
