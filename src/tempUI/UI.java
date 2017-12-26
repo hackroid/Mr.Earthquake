@@ -71,6 +71,9 @@ public class UI extends Application {
     private VBox  chartBox = new VBox();
     private XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
 
+    /**
+     *
+     */
     @Override
     public void init(){
         Locale.setDefault(Locale.US);
@@ -99,6 +102,10 @@ public class UI extends Application {
         chartBox.getChildren().add(hbox);
     }
 
+    /**
+     *
+     * @param tv
+     */
     private void refreshItems(TableView<Earthquake> tv) {
         if(cbox3.getValue()==null||cbox3.getValue().length()==0) {cbox3.setValue(WorldWide);}
         earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
@@ -110,6 +117,9 @@ public class UI extends Application {
         tv.setItems(earthquakes);
     }
 
+    /**
+     *
+     */
     public void refreshChart(){
         data.clear();
         double mag;
@@ -137,6 +147,9 @@ public class UI extends Application {
         chartBox.setAlignment(Pos.CENTER);
     }
 
+    /**
+     *
+     */
     public void setGridPane(){
         final Label lb_from = new Label(" From: ");
         final Label lb_to= new Label(" To: ");
@@ -214,6 +227,9 @@ public class UI extends Application {
         });
     }
 
+    /**
+     *
+     */
     public void setTable(){
         TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("Id");
         c1.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getId()));
@@ -260,6 +276,10 @@ public class UI extends Application {
         tv.setContextMenu(menu);
     }
 
+    /**
+     * 
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
         stage.setTitle("Display EarthQuakes");

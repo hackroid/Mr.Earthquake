@@ -9,9 +9,17 @@ import java.sql.SQLException;
 
 /**
  * Created by chenmin on 2017/12/25.
- * have not been tested
  */
 public class TransformUtil {
+    /**
+     * 
+     * @param UTC_date_start
+     * @param UTC_date_end
+     * @param magS
+     * @param magX
+     * @param region
+     * @return
+     */
     public static ObservableList<Earthquake> SearchRequest(String UTC_date_start,
                                                            String UTC_date_end,
                                                            double magS,

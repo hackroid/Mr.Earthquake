@@ -9,6 +9,9 @@ public class Earthquake {
     private double magnitude;
     private String region;
 
+    /**
+     *
+     */
     public Earthquake(){
         this.id = null;
         this.UTC_date = null;
@@ -19,6 +22,16 @@ public class Earthquake {
         this.region = null;
     }
 
+    /**
+     *
+     * @param id
+     * @param UTC_date
+     * @param latiude
+     * @param longitude
+     * @param depth
+     * @param magnitude
+     * @param region
+     */
     public Earthquake(String id, String UTC_date, double latiude,
                       double longitude, double depth,
                       double magnitude, String region){

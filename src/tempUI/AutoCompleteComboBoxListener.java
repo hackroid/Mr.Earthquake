@@ -13,6 +13,10 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
     private boolean moveCaretToPos = false;
     private int caretPos;
 
+    /**
+     *
+     * @param comboBox
+     */
     public AutoCompleteComboBoxListener(final ComboBox comboBox) {
         this.comboBox = comboBox;
         sb = new StringBuilder();
@@ -29,6 +33,10 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
         this.comboBox.setOnKeyReleased(AutoCompleteComboBoxListener.this);
     }
 
+    /**
+     *
+     * @param event
+     */
     @Override
     public void handle(KeyEvent event) {
         if(event.getCode() == KeyCode.UP) {
@@ -80,6 +88,10 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     }
 
+    /**
+     *
+     * @param textLength
+     */
     private void moveCaret(int textLength) {
         if(caretPos == -1) {
             comboBox.getEditor().positionCaret(textLength);
