@@ -10,9 +10,10 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import tempUI.Earthquake;
 
-public class MapView{
+public class MapView extends StackPane{
     /*
     private double mapHigth;
     private double mapWidth;
@@ -38,8 +39,10 @@ public class MapView{
         removeEQ();
         MapUtil mu=new MapUtil();
         for(int i=0;i<eq.size();i++){
-            Node temp=mu.showEQ(eq.get(i));
-            group.getChildren().add(temp);
+            if((eq.get(i).getLatiude() < 82.00) && (eq.get(i).getLatiude() > -82.00)) {
+                Node temp = mu.showEQ(eq.get(i));
+                group.getChildren().add(temp);
+            }
         }
     }
     public void removeEQ(){

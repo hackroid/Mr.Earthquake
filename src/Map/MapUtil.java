@@ -25,11 +25,12 @@ public class MapUtil {
      */
     public Node showEQ(Earthquake eq) {
         Circle circle = new Circle();
-        circle.setCenterX(convert(2,eq.getLongitude()));
-        circle.setCenterY(convert(1,eq.getLatiude()));
-        circle.setFill(Color.RED);
-        circle.setRadius(3.0f);
-        return circle;
+            circle.setCenterX(convert(2,eq.getLongitude()));
+            circle.setCenterY(convert(1,eq.getLatiude()));
+            circle.setFill(Color.RED);
+            circle.setRadius(3.0f);
+            System.out.println(eq.getLatiude());
+            return circle;
     }
     /**
      *
@@ -39,8 +40,8 @@ public class MapUtil {
      */
     public double convert(int mark,double value){
         if(mark==1){
-            double res = (mapHigth/180)*(-value+90);
-            return res;
+                double res = (mapHigth/164)*(-value+90);
+                return res;
         }else if(mark==2){
             double res = (mapWidth/360)*(180-value);
             return res;
