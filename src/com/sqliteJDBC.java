@@ -4,7 +4,10 @@ package com;
 import java.sql.*;
 
 public class sqliteJDBC {
-
+	/**
+	 *
+	 * @return connection
+	 */
 	public static Connection dbConnection() {
 		try {
 			// CLASSPATH must be properly set, for instance on
@@ -29,6 +32,10 @@ public class sqliteJDBC {
 		}
 	}
 
+	/**
+	 * close the connection
+	 * @param con
+	 */
 	public static void dbClose(Connection con) {
 		if (con != null) {
 			try {

@@ -1,10 +1,16 @@
 //MYSQL JDBC Connector
+/**
+ *
+ */
 package com;
 
 import java.sql.*;
 
 public class mysqlJDBC {
-
+	/**
+	 *
+	 * @return Connection
+	 */
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
@@ -19,7 +25,12 @@ public class mysqlJDBC {
 			return conn;
 		}
 	}
-	
+
+	/**
+	 *
+	 * @param conn
+	 * @return Statment
+	 */
 	public static Statement getStatement(Connection conn) {
 		Statement stmt = null;
 		try	{
