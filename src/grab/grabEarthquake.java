@@ -18,7 +18,7 @@ public class grabEarthquake {
 	public static void generateURL() {
 		int i;
 		String urlRoot = "https://www.emsc-csem.org/Earthquake/?view=", url;
-		for(i = 68; i <= 2000; i++) {
+		for(i = 1; i <= 2000; i++) {
 			url = urlRoot + String.valueOf(i);
 //			System.out.printf("%s\n", url);
 			get_Info(url);
@@ -114,13 +114,13 @@ public class grabEarthquake {
 		
 		index = dataPiece.indexOf(".", index + 30);
 		if (dataPiece.charAt(index - 2) == '>')
-			longitude = Float.parseFloat(dataPiece.substring(index - 1, index + 3)) + dataPiece.charAt(index + 33);
+			longitude = Float.parseFloat(dataPiece.substring(index - 1, index + 3));
 		else if (dataPiece.charAt(index - 3) == '>')
-			longitude = Float.parseFloat(dataPiece.substring(index - 2, index + 3)) + dataPiece.charAt(index + 33);
+			longitude = Float.parseFloat(dataPiece.substring(index - 2, index + 3));
 		else
-			longitude = Float.parseFloat(dataPiece.substring(index - 3, index + 3)) + dataPiece.charAt(index + 33);
+			longitude = Float.parseFloat(dataPiece.substring(index - 3, index + 3));
 		if (dataPiece.charAt(index + 33) == 'W')
-			longitude = 0 - longitude;
+			longitude = -longitude;
 		
 		index = dataPiece.indexOf("tabev3", index + 30);
 		if (dataPiece.charAt(index + 9) == '<')
@@ -135,7 +135,7 @@ public class grabEarthquake {
 		
 		index = dataPiece.indexOf("&#160;", index + 4);
 		region = dataPiece.substring(index + 6, dataPiece.indexOf("<", index));
-		
+		//System.out.printf("%s\n", dataPiece);
 		System.out.printf("%d %s %s %.2f %.2f %d %.1f %s\n", id, date, time, latitude, longitude, depth, mag, region);
 		pushData.push(id, date, time, latitude, longitude, depth, mag, region, stmt);
 	}
