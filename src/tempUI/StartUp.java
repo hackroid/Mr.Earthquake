@@ -13,7 +13,7 @@ public class StartUp {
  	public static void main(String[] args) {
 // 		launch(Main.class,args);
 //		Data collection complete, please do not restart it
-		
+		grab.grabEarthquake.generateURL();
  	}
 
 }
