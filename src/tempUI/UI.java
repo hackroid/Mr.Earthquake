@@ -54,24 +54,28 @@ public class UI extends Application {
     private DatePicker toDate = null;
     public static String WorldWide= "------------WORLD WIDE------------";
     private Label res_size = new Label();
-//for gridpane
+    //UI controls for gridpane
     private ComboBox<String> cbox1 = new ComboBox<String>();
     private ComboBox<Float> cbox2 = new ComboBox<Float>();
     private ComboBox<String> cbox3 = new ComboBox<String>();
-//for chart1
+    //for chart1
     private static ObservableList<XYChart.Data<String,Number>> data =
             FXCollections.observableArrayList();
     private Button saveButton = new Button("Save Chart");
-    final CategoryAxis xAxis = new CategoryAxis();
-    final NumberAxis yAxis = new NumberAxis();
-    final BarChart<String,Number> bc =
+    private final CategoryAxis xAxis = new CategoryAxis();
+    private final NumberAxis yAxis = new NumberAxis();
+    private final BarChart<String,Number> bc =
             new BarChart<String,Number>(xAxis,yAxis);
     private String[] magRange = {"<=3.0", "3.0 to 4.0", "4.0 to 5.0", "5.0 to 6.0", "6.0 to 7.0",">=7.0"};
-    private VBox  chartBox = new VBox();
+    private VBox chartBox = new VBox();
     private XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
 
     /**
-     *
+     * initialize everything including:
+     * date picker's min and max value
+     * fill combo box3 with all regions got from the database
+     * and make its text auto complete
+     * set chart box
      */
     @Override
     public void init(){
@@ -103,7 +107,9 @@ public class UI extends Application {
 
     /**
      *
-     * @param tv
+     * @param tv refresh tableview's content: the earthquakes observable list
+     *           earthquakes objects are transformed from the result set
+     * see specific method in TransfromUtil.java
      */
     private void refreshItems(TableView<Earthquake> tv) {
         if(cbox3.getValue()==null||cbox3.getValue().length()==0) {cbox3.setValue(WorldWide);}
@@ -117,7 +123,8 @@ public class UI extends Application {
     }
 
     /**
-     *
+     * every time click the search button
+     * the chart will be refreshed
      */
     public void refreshChart(){
         data.clear();
@@ -147,7 +154,7 @@ public class UI extends Application {
     }
 
     /**
-     *
+     * set every UI controls in the grid pane
      */
     public void setGridPane(){
         final Label lb_from = new Label(" From: ");
@@ -157,10 +164,8 @@ public class UI extends Application {
         final Label lb_region = new Label(" Region: ");
         final Button search_btn = new Button("Search");
         final Button update_btn = new Button("Update");
-        HBox hBox1= new HBox();
-        HBox hBox2= new HBox();
-        HBox hBox3= new HBox();
-        HBox hBox4= new HBox();
+        HBox hBox1= new HBox(); HBox hBox2= new HBox();
+        HBox hBox3= new HBox(); HBox hBox4= new HBox();
         hBox1.getChildren().addAll(lb_from,fromDate,lb_to,toDate);
         hBox2.getChildren().addAll(lb_mag,cbox1,lb_mag_to,cbox2);
         hBox3.getChildren().addAll(lb_region,cbox3);
@@ -172,7 +177,6 @@ public class UI extends Application {
         cbox1.setItems(mag_range);
         cbox1.setVisibleRowCount(7);
         cbox1.setValue("0.0");
-
         //for cbox2
         cbox2.setVisibleRowCount(7);
         cbox2.setValue(new Float(9.0f));
@@ -181,7 +185,6 @@ public class UI extends Application {
             mag_range_max.addAll(new Float(i));
         }
         cbox2.setItems(mag_range_max);
-
         //changelistener for cbox1, making sure values in cbox2 larger than cbox1
         cbox1.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
             float tmp=cbox2.getValue();
@@ -195,25 +198,25 @@ public class UI extends Application {
                 cbox2.setValue(tmp);
             }
         });
-        fromDate.setId("cbx-date");
-        toDate.setId("cbx-date");
-        cbox1.setId("cbx-mag");
-        cbox2.setId("cbx-mag");
+        //set the css style
+        fromDate.setId("cbx-date");toDate.setId("cbx-date");
+        cbox1.setId("cbx-mag");cbox2.setId("cbx-mag");
         search_btn.getStyleClass().add("btn");
         update_btn.getStyleClass().add("btn");
         hBox1.getStyleClass().add("hbox");
         hBox2.getStyleClass().add("hbox");
         hBox3.getStyleClass().add("hbox");
         hBox4.getStyleClass().add("hbox4");
-        hBox4.setSpacing(40);
         grid.getStyleClass().add("grid");
+
+        //add components into the gridpane
         grid.add(hBox1,1,0,5,1);
         grid.add(hBox2,1,1,4,1);
         grid.add(hBox3,1,2,4,1);
         grid.add(hBox4,2,3,4,1);
         res_size.setText(earthquakes.size()+" earthquakes found.");
-//        grid.setGridLinesVisible(true);
 
+        //add event on search button and update button
         search_btn.setOnAction(event -> {
                     refreshItems(tv);
                     mc.setEQ(earthquakes); tab2.setContent(mc.getGroup());
@@ -227,7 +230,8 @@ public class UI extends Application {
     }
 
     /**
-     *
+     * set columns in the table
+     * make rows to be copyable
      */
     public void setTable(){
         TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("Id");
@@ -254,21 +258,18 @@ public class UI extends Application {
         refreshItems(tv);
         tv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         MenuItem item = new MenuItem("Copy");
-        item.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                ObservableList rowList = (ObservableList) tv.getSelectionModel().getSelectedItems();
-                StringBuilder clipboardString = new StringBuilder();
-                for (Iterator it = rowList.iterator(); it.hasNext();) {
-                    Earthquake row = (Earthquake)it.next();
-                    String cell=""; cell=row.toString();
-                    clipboardString.append(cell);
-                    clipboardString.append('\n');
-                }
-                final ClipboardContent content = new ClipboardContent();
-                content.putString(clipboardString.toString());
-                Clipboard.getSystemClipboard().setContent(content);
+        item.setOnAction(event -> {
+            ObservableList rowList = tv.getSelectionModel().getSelectedItems();
+            StringBuilder clipboardString = new StringBuilder();
+            for (Iterator it = rowList.iterator(); it.hasNext();) {
+                Earthquake row = (Earthquake)it.next();
+                String cell=""; cell=row.toString();
+                clipboardString.append(cell);
+                clipboardString.append('\n');
             }
+            final ClipboardContent content = new ClipboardContent();
+            content.putString(clipboardString.toString());
+            Clipboard.getSystemClipboard().setContent(content);
         });
         ContextMenu menu = new ContextMenu();
         menu.getItems().add(item);
@@ -277,37 +278,30 @@ public class UI extends Application {
 
     /**
      *
-     * @param stage
+     * @param stage the main window
      */
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Display EarthQuakes");
+        stage.setTitle("EarthQuake Data");
         Group root = new Group();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(cssFile);
         VBox vBox = new VBox();
-        setGridPane();//and grid pane
-//        vBox.setSpacing(6);
         HBox hbox=new HBox();
         HBox himg=new HBox();
-        himg.setMinWidth(300);
-        himg.setMinHeight(200);
-        himg.getStyleClass().add("hbox-img");
         hbox.getChildren().addAll(grid,himg);
-
         vBox.getChildren().add(hbox);
         root.getChildren().add(vBox);
-        tv.setPrefWidth(860);
-        tv.setPrefHeight(500);
-
+        //initialize gridpane tableview and chart
+        setGridPane();
+        setTable();
+        refreshChart();
+        himg.getStyleClass().add("hbox-img");
         hbox.getStyleClass().add("hbox");
         vBox.getStyleClass().add("vbox");
-        setTable();
-
         //create a tabpane
         tabpane = new TabPane();
         vBox.getChildren().add(tabpane);
-
         //tab1: tableview
         tab1 = new Tab();
         tab1.setText("Table View");
@@ -324,7 +318,7 @@ public class UI extends Application {
         tab3 = new Tab();
         tab3.setText("Chart1");
         tab3.setClosable(false);
-        refreshChart();
+        tab3.setContent(chartBox);
         saveButton.getStyleClass().add("btn");
         saveButton.setOnAction((e)->{
             FileChooser fileChooser = new FileChooser();
@@ -341,10 +335,6 @@ public class UI extends Application {
                 }
             }
         });
-        /**
-         *
-         */
-        tab3.setContent(chartBox);
         //tab4: anything else?
         tab4 = new Tab();
         tab4.setText("Chart2");

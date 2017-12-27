@@ -12,6 +12,8 @@
     -fx-background-image: url("../candle.jpg");
     -fx-background-repeat: no-repeat;
     -fx-opacity: 80%;
+    -fx-min-width: 300;
+    -fx-min-height: 200;
 }
 .hbox4{
     -fx-spacing: 30;
