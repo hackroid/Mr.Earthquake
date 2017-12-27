@@ -44,64 +44,41 @@ public class Earthquake {
         this.region = region;
     }
 
+    /**
+     *
+     * @return content of rows of the table
+     */
     @Override
     public String toString(){
         return id+" "+UTC_date+" "+latiude+" "+longitude+" "+depth+" "+magnitude+" "+region;
     }
+
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUTC_date() {
         return UTC_date;
     }
 
-    public void setUTC_date(String UTC_date) {
-        this.UTC_date = UTC_date;
-    }
-
     public double getLatiude() {
         return latiude;
-    }
-
-    public void setLatiude(double latiude) {
-        this.latiude = latiude;
     }
 
     public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public double getDepth() {
         return depth;
-    }
-
-    public void setDepth(double depth) {
-        this.depth = depth;
     }
 
     public double getMagnitude() {
         return magnitude;
     }
 
-    public void setMagnitude(double magnitude) {
-        this.magnitude = magnitude;
-    }
-
     public String getRegion() {
         return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
     }
 
 }

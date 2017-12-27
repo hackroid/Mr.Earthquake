@@ -15,7 +15,7 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     /**
      *
-     * @param comboBox
+     * @param comboBox add listener to this comboBox
      */
     public AutoCompleteComboBoxListener(final ComboBox comboBox) {
         this.comboBox = comboBox;
@@ -35,7 +35,7 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     /**
      *
-     * @param event
+     * @param event key event
      */
     @Override
     public void handle(KeyEvent event) {
@@ -90,7 +90,7 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     /**
      *
-     * @param textLength
+     * @param textLength length of text
      */
     private void moveCaret(int textLength) {
         if(caretPos == -1) {
