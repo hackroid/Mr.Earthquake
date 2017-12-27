@@ -316,7 +316,7 @@ public class UI extends Application {
         mc.setEQ(earthquakes); tab2.setContent(mc.getGroup());
         //tab3: chart
         tab3 = new Tab();
-        tab3.setText("Chart1");
+        tab3.setText("Chart");
         tab3.setClosable(false);
         tab3.setContent(chartBox);
         saveButton.getStyleClass().add("btn");
@@ -335,14 +335,11 @@ public class UI extends Application {
                 }
             }
         });
-        //tab4: anything else?
-        tab4 = new Tab();
-        tab4.setText("Chart2");
-        tab4.setClosable(false);
+
         //set default tab: tab1 - table view
         SingleSelectionModel<Tab> selectionModel = tabpane.getSelectionModel();
         selectionModel.select(tab1);
-        tabpane.getTabs().addAll(tab1,tab2,tab3,tab4);
+        tabpane.getTabs().addAll(tab1,tab2,tab3);
         stage.setScene(scene);
         stage.show();
     }
