@@ -8,7 +8,7 @@ import java.sql.*;
 
 /**
  * get unique region list.
- * transform result set to observablelist<String></String>
+ * transform result set to observablelist<String>
  */
 public class getUniqueRegion {
 	/**
