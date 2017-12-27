@@ -6,6 +6,12 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.collections.FXCollections;
 
+/**
+ * usage: this template is learnt from stackoverflow
+ * implement the text-autocomplete comboBox function
+ * and achieve fuzzy search
+ * @param <T> template
+ */
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
     private ComboBox comboBox;
     private StringBuilder sb;
