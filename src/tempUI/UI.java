@@ -200,8 +200,8 @@ public class UI extends Application {
         toDate.setId("cbx-date");
         cbox1.setId("cbx-mag");
         cbox2.setId("cbx-mag");
-        search_btn.getStyleClass().add("button");
-        update_btn.getStyleClass().add("button");
+        search_btn.getStyleClass().add("btn");
+        update_btn.getStyleClass().add("btn");
         hBox1.getStyleClass().add("hbox");
         hBox2.getStyleClass().add("hbox");
         hBox3.getStyleClass().add("hbox");
@@ -327,7 +327,7 @@ public class UI extends Application {
         tab3.setText("Chart1");
         tab3.setClosable(false);
         refreshChart();
-        saveButton.getStyleClass().add("button");
+        saveButton.getStyleClass().add("btn");
         saveButton.setOnAction((e)->{
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save Chart");
