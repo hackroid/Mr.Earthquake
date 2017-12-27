@@ -1,10 +1,6 @@
 //Master Control Class
 
-package tempUI;
-
-import grab.*;
-import java.sql.*;
-import com.*;
+package Main;
 
 import static javafx.application.Application.launch;
 

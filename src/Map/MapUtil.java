@@ -1,10 +1,9 @@
 package Map;
 
-import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import tempUI.Earthquake;
+import Main.Earthquake;
 
 /**
  * Created by chenmin on 2017/12/16.

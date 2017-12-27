@@ -10,8 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import tempUI.Earthquake;
+import Main.Earthquake;
 
 public class MapView{
     /*

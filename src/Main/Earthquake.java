@@ -1,4 +1,4 @@
-package tempUI;
+package Main;
 
 public class Earthquake {
     private String id;

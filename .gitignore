@@ -3,7 +3,7 @@
 .DS_Store
 *.xml
 Mr.Earthquake.iml
-src/tempUI/Main.java
+src/Main/Main.java
 =======
 >>>>>>> 147cf0a00620b00e499368af3f527381f93e693d
 out/production/Mr.Earthquake/com/mysqlJDBC.class
@@ -13,11 +13,11 @@ out/production/Mr.Earthquake/com/mysqlJDBC.class
 *.png
 src/search/getUniqueRegion.java
 src/search/getUniqueRegion.java
-src/tempUI/UI.java
-src/tempUI/AutoCompleteComboBoxListener.java
-src/tempUI/UI.java
-out/production/Mr.Earthquake/tempUI/application.css
-src/tempUI/UI.java
-out/production/Mr.Earthquake/tempUI/application.css
-src/tempUI/UI.java
-src/tempUI/UI.java
+src/Main/UI.java
+src/Main/AutoCompleteComboBoxListener.java
+src/Main/UI.java
+out/production/Mr.Earthquake/Main/application.css
+src/Main/UI.java
+out/production/Mr.Earthquake/Main/application.css
+src/Main/UI.java
+src/Main/UI.java
