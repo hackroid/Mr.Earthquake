@@ -4,6 +4,9 @@ import java.sql.*;
 import com.mysqlJDBC;
 import Main.UI;
 
+/**
+ * opearte with database.
+ */
 public class input {
 	private static String UTC_date_start;
 	private static String UTC_date_end;

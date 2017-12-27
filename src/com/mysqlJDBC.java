@@ -1,6 +1,5 @@
-//MYSQL JDBC Connector
 /**
- *
+ *MYSQL JDBC Connector
  */
 package com;
 

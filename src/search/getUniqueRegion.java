@@ -6,6 +6,10 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+/**
+ * get unique region list.
+ * transform result set to observablelist<String></String>
+ */
 public class getUniqueRegion {
 	/**
 	 * To combox list.

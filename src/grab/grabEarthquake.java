@@ -1,4 +1,3 @@
-//*********Data collection complete, please do not restart it***********
 
 package grab;
 import java.io.*;
@@ -8,12 +7,14 @@ import java.sql.*;
 import com.mysqlJDBC;
 
 /**
- *
+ *Data collection complete, please do not restart it
  */
 public class grabEarthquake {
-//	The website limits its data to 2000 pages, 
-//	50 earthquakes on every page, total 100k pieces.
-//	Just for mainpage, in time descending order, and real-time update
+	/**
+	 * The website limits its data to 2000 pages,
+	 *50 earthquakes on every page, total 100k pieces.
+	 *Just for mainpage, in time descending order, and real-time update
+	 */
 
 	static Connection conn = mysqlJDBC.getConnection();
 	static Statement  stmt = mysqlJDBC.getStatement(conn);

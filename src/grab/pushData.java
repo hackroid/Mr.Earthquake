@@ -1,9 +1,11 @@
-//*********Data collection complete, please do not restart it***********
 
 package grab;
 import com.mysqlJDBC;
 import java.sql.*;
 
+/**
+ * Data collection complete, please do not restart it
+ */
 public class pushData {
 	
 	public static void push(int id, String date, String time, float latitude, float longitude, int depth, float magnitude, String region, Statement stmt) {
@@ -12,8 +14,6 @@ public class pushData {
 		try {
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-//			e.printStackTrace();
 		}
 	}
 	
