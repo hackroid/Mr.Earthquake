@@ -48,7 +48,6 @@ public class UI extends Application {
     private static GridPane grid = new GridPane();
     private static ObservableList<String> regions = FXCollections.observableArrayList();
     private MapView mc;
-    private Node MapContent;
     private TabPane tabpane;
     private Tab tab1,tab2,tab3,tab4;
     private DatePicker fromDate = null;
@@ -277,7 +276,7 @@ public class UI extends Application {
     }
 
     /**
-     * 
+     *
      * @param stage
      */
     @Override
@@ -320,8 +319,7 @@ public class UI extends Application {
         tab2.setClosable(false);
         mc=new MapView();
         mc.setMap("/tempUI/Mercator.jpg");
-        MapContent=mc.getGroup();
-        tab2.setContent(MapContent);
+        mc.setEQ(earthquakes); tab2.setContent(mc.getGroup());
         //tab3: chart
         tab3 = new Tab();
         tab3.setText("Chart1");
