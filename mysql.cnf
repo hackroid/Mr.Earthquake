@@ -1,0 +1,4 @@
+driver = com.mysql.jdbc.Driver
+url = jdbc:mysql://35.201.211.143:3306/earthquake?autoReconnect=true&useSSL=false
+USER = test
+PASSWORD = 1234
