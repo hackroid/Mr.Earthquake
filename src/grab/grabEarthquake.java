@@ -25,7 +25,7 @@ public class grabEarthquake {
 	public static void generateURL() {
 		int i;
 		String urlRoot = "https://www.emsc-csem.org/Earthquake/?view=", url;
-		for(i = 1; i <= 100; i++) {
+		for(i = 1; i <= 1; i++) {
 			url = urlRoot + String.valueOf(i);
 //			System.out.printf("%s\n", url);
 			get_Info(url);
@@ -52,14 +52,14 @@ public class grabEarthquake {
 				Result += line + '\n';
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		} finally {
 			try {
 				if(in != null) {
 					in.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		}
 		try {

@@ -24,7 +24,6 @@ public class getUniqueRegion {
 				re = rs.getString(2);
 				regions.add(re);
 			}
-			System.out.println("regions"+regions.size());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

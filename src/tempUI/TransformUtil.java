@@ -30,7 +30,6 @@ public class TransformUtil {
         ResultSet rs = data.search();
 
         try {
-            System.out.println(rs.getFetchSize());
             while (rs.next()) {
                 earthquakes.add(new Earthquake(rs.getString(1),
                         rs.getString(2).replace("\"","")+"  "+rs.getString(3),

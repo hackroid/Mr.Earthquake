@@ -62,16 +62,16 @@ public class input {
 		Statement stmt = mysqlJDBC.getStatement(conn);
 		String sql = "select * from quake where id > 0";
 		if (UTC_date_start != null) {
-			sql += (" and date > \'" + UTC_date_start + "\'");
+			sql += (" and date >= \'" + UTC_date_start + "\'");
 		}
 		if (UTC_date_end != null) {
-			sql += (" and date < \'" + UTC_date_end + "\'");
+			sql += (" and date <= \'" + UTC_date_end + "\'");
 		}
 		if (magS != 0) {
-			sql += (" and magnitude > " + Double.toString(magS));
+			sql += (" and magnitude >= " + Double.toString(magS));
 		}
 		if (magX != 0) {
-			sql += (" and magnitude < " + Double.toString(magX));
+			sql += (" and magnitude <= " + Double.toString(magX));
 		}
 		if (region!= UI.WorldWide && region != null) {
 			sql += (" and region = \'" + region + "\'");

@@ -4,16 +4,12 @@ import Map.MapView;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -28,16 +24,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 
 public class UI extends Application {
     private final String cssFile = UI.class.getClassLoader()
@@ -83,7 +75,7 @@ public class UI extends Application {
         fromDate = new DatePicker();
         toDate = new DatePicker();
         toDate.setValue(LocalDate.now());
-        fromDate.setValue(toDate.getValue().minusMonths(1));
+        fromDate.setValue(toDate.getValue().minusMonths(3));
         fromDate.setEditable(false);
         toDate.setEditable(false);
         regions=search.getUniqueRegion.getRegions();
@@ -92,7 +84,7 @@ public class UI extends Application {
         cbox3.setPromptText(WorldWide);
         cbox3.setValue(WorldWide);
         cbox3.setVisibleRowCount(20);
-        AutoCompleteComboBoxListener<String> autoBox = new AutoCompleteComboBoxListener(cbox3);
+        AutoCompleteComboBoxListener autoBox = new AutoCompleteComboBoxListener(cbox3);
         bc.getData().add(series);
         bc.setPrefWidth(400);
         bc.setPrefHeight(400);
@@ -115,10 +107,8 @@ public class UI extends Application {
         if(cbox3.getValue()==null||cbox3.getValue().length()==0) {cbox3.setValue(WorldWide);}
         earthquakes = TransformUtil.SearchRequest(fromDate.getValue().toString(),
                 toDate.getValue().toString(), Double.parseDouble(cbox1.getValue().toString()),
-                Double.parseDouble(cbox2.getValue().toString()), cbox3.getValue().toString());
+                Double.parseDouble(cbox2.getValue().toString()), cbox3.getValue());
         res_size.setText(earthquakes.size()+" earthquakes found.");
-        System.out.println("1");
-        System.out.println(earthquakes.size());
         tv.setItems(earthquakes);
     }
 
@@ -126,7 +116,7 @@ public class UI extends Application {
      * every time click the search button
      * the chart will be refreshed
      */
-    public void refreshChart(){
+    private void refreshChart(){
         data.clear();
         double mag;
         bc.setTitle("Chart by Magnitude Range");
@@ -135,7 +125,7 @@ public class UI extends Application {
         bc.setLegendVisible(false);
         bc.setAnimated(false);
         int count[]=new int[6];
-        Iterator it = earthquakes.iterator();
+        Iterator<Earthquake> it = earthquakes.iterator();
         while(it.hasNext()) {
             Earthquake e = (Earthquake) it.next();
             mag=e.getMagnitude();
@@ -147,7 +137,7 @@ public class UI extends Application {
             else{ ++count[5]; }
         }
         for(int i=0;i<6; ++i) {
-            data.add(new XYChart.Data<String, Number>(magRange[i], count[i]));
+            data.add(new XYChart.Data<>(magRange[i], count[i]));
         }
         series.setData(data);
         chartBox.setAlignment(Pos.CENTER);
@@ -156,7 +146,7 @@ public class UI extends Application {
     /**
      * set every UI controls in the grid pane
      */
-    public void setGridPane(){
+    private void setGridPane(){
         final Label lb_from = new Label(" From: ");
         final Label lb_to= new Label(" To: ");
         final Label lb_mag = new Label(" Magnitude: ");
@@ -179,14 +169,14 @@ public class UI extends Application {
         cbox1.setValue("0.0");
         //for cbox2
         cbox2.setVisibleRowCount(7);
-        cbox2.setValue(new Float(9.0f));
+        cbox2.setValue(9.0f);
         ObservableList<Float> mag_range_max = FXCollections.observableArrayList();
         for (float i=1.0f; i<=9.0; i=i+1.0f){
             mag_range_max.addAll(new Float(i));
         }
         cbox2.setItems(mag_range_max);
         //changelistener for cbox1, making sure values in cbox2 larger than cbox1
-        cbox1.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
+        cbox1.valueProperty().addListener((ov, t, t1) -> {
             float tmp=cbox2.getValue();
             for (float i=1.0f;i<=9.0;i=i+1.0f){
                 cbox2.getItems().remove(i);
@@ -225,7 +215,10 @@ public class UI extends Application {
         );
 //------------------------------------------------------------------------
         update_btn.setOnAction(event -> {
-
+                grab.grabEarthquake.generateURL();
+                refreshItems(tv);
+            mc.setEQ(earthquakes); tab2.setContent(mc.getGroup());
+            refreshChart(); tab3.setContent(chartBox);
         });
     }
 
@@ -233,7 +226,7 @@ public class UI extends Application {
      * set columns in the table
      * make rows to be copyable
      */
-    public void setTable(){
+    private void setTable(){
         TableColumn<Earthquake,String> c1 = new TableColumn<Earthquake, String>("Id");
         c1.setCellValueFactory(e -> new ReadOnlyStringWrapper(e.getValue().getId()));
         tv.getColumns().add(c1);
