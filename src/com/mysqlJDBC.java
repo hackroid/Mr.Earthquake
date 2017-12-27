@@ -4,7 +4,11 @@
  */
 package com;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.*;
+import java.util.Properties;
 
 public class mysqlJDBC {
 	/**
@@ -14,11 +18,22 @@ public class mysqlJDBC {
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://35.201.211.143:3306/earthquake?autoReconnect=true&useSSL=false", "test", "1234");
+			Properties prop = new Properties();
+			BufferedReader conf = new BufferedReader(new FileReader("mysql.cnf"));
+			prop.load(conf);
+			String className = prop.getProperty("driver");
+			String url = prop.getProperty("url");
+			String USER = prop.getProperty("USER");
+			String PASSWORD = prop.getProperty("PASSWORD");
+			Class.forName(className);
+			conn = DriverManager.getConnection(url, USER, PASSWORD);
 			return conn;
 		} catch (SQLException se) {
 			se.printStackTrace();
+			return conn;
+		}catch(FileNotFoundException fe){
+			System.err.println("cannot open the property file or no such file");
+			System.exit(1);
 			return conn;
 		} catch (Exception e) {
 			e.printStackTrace();
