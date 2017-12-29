@@ -14,6 +14,14 @@ public class pushData {
 		try {
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
+		} finally {
+			try {
+				if(stmt != null) {
+					stmt.close();
+				}
+			} catch (Exception e) {
+//				e.printStackTrace();
+			}
 		}
 	}
 	

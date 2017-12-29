@@ -15,10 +15,7 @@ public class grabEarthquake {
 	 *50 earthquakes on every page, total 100k pieces.
 	 *Just for mainpage, in time descending order, and real-time update
 	 */
-
-	static Connection conn = mysqlJDBC.getConnection();
-	static Statement  stmt = mysqlJDBC.getStatement(conn);
-
+	
 	/**
 	 * using iterator to generate URL of every earthquake information
 	 *
@@ -75,9 +72,7 @@ public class grabEarthquake {
 //			System.out.println(min3Result);
 			circleFilter(min3Result, 0, 0);
 		} catch (Exception e) {
-			
 		}
-
 	}
 
 	/**
@@ -86,8 +81,9 @@ public class grabEarthquake {
 	 * @param prev
 	 * @var curr  index of current pointer.
 	 * @param count number
+	 * @throws SQLException 
 	 */
-	public static void circleFilter(String dataSet, int prev, int count) {
+	public static void circleFilter(String dataSet, int prev, int count) throws SQLException {
 		
 //		Find every piece of data row
 		int curr = dataSet.indexOf("<tr", prev);
@@ -114,13 +110,15 @@ public class grabEarthquake {
 	 *
 	 * @param dataPiece
 	 */
-	public static void dataFilter(String dataPiece) {
+	public static void dataFilter(String dataPiece) throws SQLException {
 		
 //		Filter out the data
 //		System.out.printf("%s\n", dataPiece);
 		int index, id, depth;
 		String date, time, latitudetemp, longitudetemp, region;
 		float mag, latitude, longitude;
+		Connection conn = mysqlJDBC.getConnection();
+		Statement  stmt = mysqlJDBC.getStatement(conn);
 		
 		index = dataPiece.indexOf("id=") + 4;
 		id = Integer.valueOf(dataPiece.substring(index, index + 6)).intValue();
@@ -161,7 +159,21 @@ public class grabEarthquake {
 		index = dataPiece.indexOf("&#160;", index + 4);
 		region = dataPiece.substring(index + 6, dataPiece.indexOf("<", index));
 		//System.out.printf("%s\n", dataPiece);
-		System.out.printf("%d %s %s %.2f %.2f %d %.1f %s\n", id, date, time, latitude, longitude, depth, mag, region);
-		pushData.push(id, date, time, latitude, longitude, depth, mag, region, stmt);
+		try {
+			System.out.printf("%d %s %s %.2f %.2f %d %.1f %s\n", id, date, time, latitude, longitude, depth, mag, region);
+			pushData.push(id, date, time, latitude, longitude, depth, mag, region, stmt);
+		} finally {
+			try {
+				if(stmt != null) {
+					stmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+//				e.printStackTrace();
+			}
+		}
+		
 	}
 }

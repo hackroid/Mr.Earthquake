@@ -305,7 +305,7 @@ public class UI extends Application {
         tab2.setText("World Map");
         tab2.setClosable(false);
         mc=new MapView();
-        mc.setMap("/Main/Mercator.jpg");
+        mc.setMap("src/Map/Mercator1.png");
         mc.setEQ(earthquakes); tab2.setContent(mc.getGroup());
         //tab3: chart
         tab3 = new Tab();
